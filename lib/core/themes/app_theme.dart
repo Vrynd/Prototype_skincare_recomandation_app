@@ -1,0 +1,40 @@
+import 'package:flutter/material.dart';
+import 'package:skincare_recomendation/core/themes/app_colors.dart';
+import 'package:skincare_recomendation/core/themes/app_typography.dart';
+
+class AppTheme {
+  static final ColorScheme lightScheme = ColorScheme.fromSeed(
+    seedColor: AppColors.seed,
+    brightness: Brightness.light,
+  );
+
+  static final ColorScheme darkScheme = ColorScheme.fromSeed(
+    seedColor: AppColors.seed,
+    brightness: Brightness.dark,
+  );
+
+  static final ThemeData lightTheme = ThemeData(
+    useMaterial3: true,
+    colorScheme: lightScheme,
+    scaffoldBackgroundColor: AppColors.lightBackground,
+    textTheme: AppTypography.textTheme.apply(
+      bodyColor: lightScheme.onSurface,
+      displayColor: lightScheme.onSurface,
+    ),
+  );
+
+  static final ThemeData darkTheme = ThemeData(
+    useMaterial3: true,
+    colorScheme: darkScheme,
+    scaffoldBackgroundColor: AppColors.darkBackground,
+    textTheme: AppTypography.textTheme.apply(
+      bodyColor: darkScheme.onSurface,
+      displayColor: darkScheme.onSurface,
+    ),
+  );
+}
+
+extension ThemeExt on BuildContext {
+  ColorScheme get colors => Theme.of(this).colorScheme;
+  TextTheme get text => Theme.of(this).textTheme;
+}
