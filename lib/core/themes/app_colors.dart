@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class AppColors {
@@ -17,4 +18,9 @@ class AppColors {
   // Optional scaffold backgrounds
   static const Color lightBackground = Color(0xFFF8F9F0);
   static const Color darkBackground = Color(0xFF11130D);
+
+  // Aura/Mesh Gradient Colors (Brand Adaptive)
+  static const Color lime = Color(0xFFF1FCE0);
+  static const Color mint = Color(0xFFE0F2F1);
+  static const Color yellow = Color(0xFFFEF9E7);
 }

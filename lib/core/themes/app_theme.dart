@@ -38,3 +38,17 @@ extension ThemeExt on BuildContext {
   ColorScheme get colors => Theme.of(this).colorScheme;
   TextTheme get text => Theme.of(this).textTheme;
 }
+
+extension ColorSchemeExt on ColorScheme {
+  Color get lime => brightness == Brightness.light 
+      ? AppColors.lime 
+      : AppColors.lime.withValues(alpha: 0.1);
+      
+  Color get mint => brightness == Brightness.light 
+      ? AppColors.mint 
+      : AppColors.mint.withValues(alpha: 0.1);
+      
+  Color get yellow => brightness == Brightness.light 
+      ? AppColors.yellow 
+      : AppColors.yellow.withValues(alpha: 0.1);
+}
