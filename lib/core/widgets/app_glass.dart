@@ -1,16 +1,12 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:skincare_recomendation/core/themes/app_theme.dart';
+import 'package:skincare_recomendation/core/core.dart';
 
 class AppGlass extends StatelessWidget {
   final Widget child;
   final bool isScrolled;
 
-  const AppGlass({
-    super.key,
-    required this.child,
-    required this.isScrolled,
-  });
+  const AppGlass({super.key, required this.child, required this.isScrolled});
 
   @override
   Widget build(BuildContext context) {

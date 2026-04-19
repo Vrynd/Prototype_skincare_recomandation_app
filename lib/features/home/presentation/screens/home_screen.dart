@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:skincare_recomendation/core/themes/app_spacing.dart';
-import 'package:skincare_recomendation/core/themes/app_theme.dart';
-import 'package:skincare_recomendation/core/utils/app_helpers.dart';
-import 'package:skincare_recomendation/core/widgets/app_backdrop.dart';
-import 'package:skincare_recomendation/core/widgets/app_header.dart';
-import 'package:skincare_recomendation/core/widgets/app_scafold.dart';
+import 'package:skincare_recomendation/core/core.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

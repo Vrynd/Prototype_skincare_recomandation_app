@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:skincare_recomendation/core/themes/app_theme.dart';
+import 'package:skincare_recomendation/core/core.dart';
 
 class AppScafold extends StatelessWidget {
   final PreferredSizeWidget? appBar;
