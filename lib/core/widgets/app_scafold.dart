@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:skincare_recomendation/core/core.dart';
 
 class AppScafold extends StatelessWidget {
   final PreferredSizeWidget? appBar;
@@ -8,7 +7,6 @@ class AppScafold extends StatelessWidget {
   final bool isFullScreen;
   final bool extendBody;
   final Color? backgroundColor;
-  final Widget? background;
   final Widget? bottomNavigationBar;
   final Widget? floatingActionButton;
 
@@ -19,7 +17,6 @@ class AppScafold extends StatelessWidget {
     this.isFullScreen = false,
     this.extendBody = false,
     this.backgroundColor,
-    this.background,
     this.bottomNavigationBar,
     this.floatingActionButton,
   });
@@ -44,27 +41,12 @@ class AppScafold extends StatelessWidget {
   Widget build(BuildContext context) {
     _sytemUIOverlay();
 
-    final scaffold = Scaffold(
-      backgroundColor: background != null ? Colors.transparent : backgroundColor,
-      extendBody: extendBody,
+    return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: appBar,
       body: body,
       floatingActionButton: floatingActionButton,
       bottomNavigationBar: bottomNavigationBar,
     );
-
-    if (background != null) {
-      return Material(
-        color: context.colors.surface,
-        child: Stack(
-          children: [
-            Positioned.fill(child: background!),
-            scaffold,
-          ],
-        ),
-      );
-    }
-
-    return scaffold;
   }
 }

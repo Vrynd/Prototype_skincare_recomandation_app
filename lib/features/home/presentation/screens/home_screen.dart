@@ -38,8 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScafold(
-      extendBody: true,
-      background: const AppBackdrop(child: SizedBox.expand()),
+      backgroundColor: context.colors.lightBackground,
       appBar: AppHeader(
         isScrolled: _isScrolled,
         title: 'Kinara Razania',
@@ -77,9 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 52,
                   height: 52,
                   decoration: BoxDecoration(
-                    color: context.colors.primaryContainer.withValues(
-                      alpha: 0.4,
-                    ),
+                    color: context.colors.primaryContainer,
                     shape: BoxShape.circle,
                   ),
                   child: Center(

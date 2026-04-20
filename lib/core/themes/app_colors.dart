@@ -16,7 +16,7 @@ class AppColors {
   static const Color sensitive = Color(0xFFFF8A80);
 
   // Optional scaffold backgrounds
-  static const Color lightBackground = Color(0xFFF8F9F0);
+  static const Color lightBackground = Color(0xFFF0F0F0);
   static const Color darkBackground = Color(0xFF11130D);
 
   // Aura/Mesh Gradient Colors (Brand Adaptive)

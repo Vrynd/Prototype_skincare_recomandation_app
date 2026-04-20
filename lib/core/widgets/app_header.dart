@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:skincare_recomendation/core/core.dart';
-
 
 class AppHeader extends StatefulWidget implements PreferredSizeWidget {
   final bool isScrolled;
@@ -10,6 +10,8 @@ class AppHeader extends StatefulWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final Widget? leading;
   final double height;
+  final VoidCallback? onNotificationTap;
+  final bool hasNotification;
 
   const AppHeader({
     super.key,
@@ -20,6 +22,8 @@ class AppHeader extends StatefulWidget implements PreferredSizeWidget {
     this.actions,
     this.leading,
     this.height = 100,
+    this.onNotificationTap,
+    this.hasNotification = false,
   });
 
   @override
@@ -42,10 +46,13 @@ class _AppHeaderState extends State<AppHeader> {
   }
 
   Widget get _leading {
-    if (widget.leading == null) return const SizedBox.shrink();
+    if (widget.leading == null && widget.avatarUrl == null) {
+      return const SizedBox.shrink();
+    }
+
     return Padding(
       padding: const EdgeInsets.only(right: 16),
-      child: widget.leading!,
+      child: widget.leading ?? _avatar,
     );
   }
 
@@ -69,8 +76,6 @@ class _AppHeaderState extends State<AppHeader> {
             widget.title,
             style: context.text.headlineMedium?.copyWith(
               color: context.colors.onSurface,
-              fontWeight: FontWeight.bold,
-              letterSpacing: -0.5,
             ),
           ),
         ],
@@ -83,15 +88,32 @@ class _AppHeaderState extends State<AppHeader> {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.actions != null) ...widget.actions!,
-        if (widget.avatarUrl != null) ...[AppSpacing.h16, _avatar],
+        Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            color: context.colors.surfaceContainerLowest,
+            shape: BoxShape.circle,
+          ),
+          child: IconButton(
+            onPressed: widget.onNotificationTap,
+            icon: HugeIcon(
+              icon: widget.hasNotification
+                  ? HugeIcons.strokeRoundedNotification02
+                  : HugeIcons.strokeRoundedNotification01,
+              color: context.colors.onSurface,
+              size: 24,
+            ),
+          ),
+        ),
       ],
     );
   }
 
   Widget get _avatar {
     return Container(
-      width: 42,
-      height: 42,
+      width: 46,
+      height: 46,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: context.colors.surface,

@@ -40,15 +40,18 @@ extension ThemeExt on BuildContext {
 }
 
 extension ColorSchemeExt on ColorScheme {
-  Color get lime => brightness == Brightness.light 
-      ? AppColors.lime 
+  Color get lime => brightness == Brightness.light
+      ? AppColors.lime
       : AppColors.lime.withValues(alpha: 0.1);
-      
-  Color get mint => brightness == Brightness.light 
-      ? AppColors.mint 
+
+  Color get mint => brightness == Brightness.light
+      ? AppColors.mint
       : AppColors.mint.withValues(alpha: 0.1);
-      
-  Color get yellow => brightness == Brightness.light 
-      ? AppColors.yellow 
+
+  Color get yellow => brightness == Brightness.light
+      ? AppColors.yellow
       : AppColors.yellow.withValues(alpha: 0.1);
+
+  Color get lightBackground => AppColors.lightBackground;
+  Color get darkBackground => AppColors.darkBackground;
 }
