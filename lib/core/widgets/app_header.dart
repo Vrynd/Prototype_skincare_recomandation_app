@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hugeicons/hugeicons.dart';
 import 'package:skincare_recomendation/core/core.dart';
 
 class AppHeader extends StatefulWidget implements PreferredSizeWidget {
@@ -10,7 +9,7 @@ class AppHeader extends StatefulWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final Widget? leading;
   final double height;
-  final VoidCallback? onNotificationTap;
+  final VoidCallback? onAvatarTap;
   final bool hasNotification;
 
   const AppHeader({
@@ -22,7 +21,7 @@ class AppHeader extends StatefulWidget implements PreferredSizeWidget {
     this.actions,
     this.leading,
     this.height = 100,
-    this.onNotificationTap,
+    this.onAvatarTap,
     this.hasNotification = false,
   });
 
@@ -46,13 +45,13 @@ class _AppHeaderState extends State<AppHeader> {
   }
 
   Widget get _leading {
-    if (widget.leading == null && widget.avatarUrl == null) {
+    if (widget.leading == null) {
       return const SizedBox.shrink();
     }
 
     return Padding(
       padding: const EdgeInsets.only(right: 16),
-      child: widget.leading ?? _avatar,
+      child: widget.leading,
     );
   }
 
@@ -61,7 +60,7 @@ class _AppHeaderState extends State<AppHeader> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
-        spacing: 2,
+        spacing: 4,
         children: [
           if (widget.label != null) ...[
             Text(
@@ -86,47 +85,56 @@ class _AppHeaderState extends State<AppHeader> {
   Widget get _actionsSection {
     return Row(
       mainAxisSize: MainAxisSize.min,
+      spacing: 12,
       children: [
         if (widget.actions != null) ...widget.actions!,
-        Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            color: context.colors.surfaceContainerLowest,
-            shape: BoxShape.circle,
-          ),
-          child: IconButton(
-            onPressed: widget.onNotificationTap,
-            icon: HugeIcon(
-              icon: widget.hasNotification
-                  ? HugeIcons.strokeRoundedNotification02
-                  : HugeIcons.strokeRoundedNotification01,
-              color: context.colors.onSurface,
-              size: 24,
-            ),
-          ),
-        ),
+        if (widget.avatarUrl != null) _avatar,
       ],
     );
   }
 
   Widget get _avatar {
-    return Container(
-      width: 46,
-      height: 46,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: context.colors.surface,
-        boxShadow: [
-          BoxShadow(
-            color: context.colors.shadow.withValues(alpha: 0.05),
-            blurRadius: 10,
+    return GestureDetector(
+      onTap: widget.onAvatarTap,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: context.colors.surface,
+              boxShadow: [
+                BoxShadow(
+                  color: context.colors.shadow.withValues(alpha: 0.05),
+                  blurRadius: 10,
+                ),
+              ],
+              image: DecorationImage(
+                image: NetworkImage(widget.avatarUrl!),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
+          if (widget.hasNotification)
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Container(
+                width: 12,
+                height: 12,
+                decoration: BoxDecoration(
+                  color: context.colors.error, // Warna merah notifikasi
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: context.colors.surfaceContainerLowest,
+                    width: 2,
+                  ),
+                ),
+              ),
+            ),
         ],
-        image: DecorationImage(
-          image: NetworkImage(widget.avatarUrl!),
-          fit: BoxFit.cover,
-        ),
       ),
     );
   }

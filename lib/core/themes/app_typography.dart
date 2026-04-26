@@ -6,10 +6,10 @@ class AppTypography {
 
   // Display
   static final TextStyle displayLarge = _base.copyWith(
-    fontSize: 32,
-    fontWeight: FontWeight.w700,
-    height: 1.2,
-    letterSpacing: -0.5,
+    fontSize: 64,
+    fontWeight: FontWeight.w500,
+    height: 1.0,
+    letterSpacing: -2,
   );
 
   static final TextStyle displayMedium = _base.copyWith(

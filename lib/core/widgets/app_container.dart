@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:skincare_recomendation/core/core.dart';
-import 'package:skincare_recomendation/core/themes/app_radius.dart';
 
 class AppContainer extends StatelessWidget {
   final Widget? child;
@@ -11,7 +10,7 @@ class AppContainer extends StatelessWidget {
   final BorderRadius? borderRadius;
   final bool showBorder;
   final bool showShadow;
-  final double bgOpacity;
+  final double opacity;
   final AlignmentGeometry? alignment;
   final BoxConstraints? constraints;
   final Clip clipBehavior;
@@ -29,7 +28,7 @@ class AppContainer extends StatelessWidget {
     this.borderRadius,
     this.showBorder = true,
     this.showShadow = true,
-    this.bgOpacity = 0.8,
+    this.opacity = 1.0,
     this.alignment,
     this.constraints,
     this.clipBehavior = Clip.antiAlias,
@@ -57,7 +56,7 @@ class AppContainer extends StatelessWidget {
 
     return BoxDecoration(
       color: gradient == null
-          ? backgroundColor.withValues(alpha: bgOpacity)
+          ? backgroundColor.withValues(alpha: opacity)
           : null,
       borderRadius: _radius,
       shape: shape,
