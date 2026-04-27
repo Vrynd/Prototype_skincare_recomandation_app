@@ -7,6 +7,7 @@ class AppContainer extends StatelessWidget {
   final double? height;
   final EdgeInsetsGeometry? padding;
   final Color? color;
+  final Color? borderColor;
   final BorderRadius? borderRadius;
   final bool showBorder;
   final bool showShadow;
@@ -25,6 +26,7 @@ class AppContainer extends StatelessWidget {
     this.height,
     this.padding = const EdgeInsets.all(16),
     this.color,
+    this.borderColor,
     this.borderRadius,
     this.showBorder = true,
     this.showShadow = true,
@@ -56,7 +58,9 @@ class AppContainer extends StatelessWidget {
 
     return BoxDecoration(
       color: gradient == null
-          ? backgroundColor.withValues(alpha: opacity)
+          ? (color == Colors.transparent
+                ? Colors.transparent
+                : backgroundColor.withValues(alpha: opacity))
           : null,
       borderRadius: _radius,
       shape: shape,
@@ -74,7 +78,10 @@ class AppContainer extends StatelessWidget {
 
   Border? _border(BuildContext context) {
     if (!showBorder) return null;
-    return Border.all(color: context.colors.surfaceContainerLowest, width: 1.3);
+    return Border.all(
+      color: borderColor ?? context.colors.surfaceContainerLowest,
+      width: 1.3,
+    );
   }
 
   List<BoxShadow>? _shadow(BuildContext context) {
