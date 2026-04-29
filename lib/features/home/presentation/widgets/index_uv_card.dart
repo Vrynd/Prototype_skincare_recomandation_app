@@ -25,7 +25,7 @@ class IndexUvCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppContainer(
       opacity: 0.6,
-      borderRadius: AppRadius.br24,
+      borderRadius: AppRadius.br32,
       padding: EdgeInsets.zero,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

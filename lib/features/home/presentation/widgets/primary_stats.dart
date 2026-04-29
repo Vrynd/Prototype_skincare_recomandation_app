@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:skincare_recomendation/core/core.dart';
-import 'package:skincare_recomendation/core/widgets/topography_painter.dart';
 
 class PrimaryStats extends StatelessWidget {
   final int value;
