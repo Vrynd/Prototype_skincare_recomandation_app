@@ -9,6 +9,7 @@ import 'package:skincare_recomendation/core/widgets/app_scafold.dart';
 import 'package:skincare_recomendation/features/home/presentation/widgets/index_uv_card.dart';
 import 'package:skincare_recomendation/features/home/provider/date_provider.dart';
 import 'package:skincare_recomendation/features/home/provider/reminder_provider.dart';
+import 'package:skincare_recomendation/features/home/provider/location_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -58,9 +59,11 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ValueListenableBuilder<bool>(
                 valueListenable: _isScrolled,
                 builder: (context, scrolled, _) {
+                  final address = context.watch<LocationProvider>().address;
+
                   return AppHeader(
                     isScrolled: scrolled,
-                    title: 'Semarang, Jawa Tengah',
+                    title: address,
                     label: date,
                     avatarUrl: 'https://i.pravatar.cc/150?img=47',
                   );

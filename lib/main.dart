@@ -4,10 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:skincare_recomendation/core/services/storage_service.dart';
+import 'package:skincare_recomendation/core/services/location_service.dart';
 import 'package:skincare_recomendation/core/themes/app_theme.dart';
 
 import 'package:skincare_recomendation/features/home/presentation/screens/home_screen.dart';
 import 'package:skincare_recomendation/features/home/provider/reminder_provider.dart';
+import 'package:skincare_recomendation/features/home/provider/location_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,8 +21,15 @@ void main() async {
     MultiProvider(
       providers: [
         Provider<StorageService>.value(value: storageService),
+        Provider<LocationService>(create: (_) => LocationService()),
         ChangeNotifierProvider(
           create: (context) => ReminderProvider(context.read<StorageService>()),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LocationProvider(
+            context.read<LocationService>(),
+            context.read<StorageService>(),
+          ),
         ),
       ],
       child: const MyApp(),

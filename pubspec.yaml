@@ -23,6 +23,8 @@ dependencies:
   salomon_bottom_bar: ^3.3.2
   animated_bottom_navigation_bar: ^1.4.0
   supabase_flutter: ^2.12.2
+  geolocator: ^14.0.2
+  geocoding: ^4.0.0
 
 dev_dependencies:
   flutter_test:
