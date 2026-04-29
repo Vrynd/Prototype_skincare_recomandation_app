@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:skincare_recomendation/core/core.dart';
+
+import 'package:skincare_recomendation/core/services/storage_service.dart';
 
 class ReminderProvider extends ChangeNotifier {
   final StorageService _storageService;

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:hugeicons/hugeicons.dart';
-import 'package:skincare_recomendation/core/core.dart';
+
+import 'package:skincare_recomendation/core/themes/app_radius.dart';
+import 'package:skincare_recomendation/core/themes/app_spacing.dart';
+import 'package:skincare_recomendation/core/themes/app_theme.dart';
+import 'package:skincare_recomendation/core/widgets/app_container.dart';
 
 enum StatsType { category, airQuality }
 

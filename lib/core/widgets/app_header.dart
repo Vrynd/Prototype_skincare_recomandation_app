@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:skincare_recomendation/core/core.dart';
+
+import 'package:skincare_recomendation/core/themes/app_theme.dart';
+import 'package:skincare_recomendation/core/widgets/app_glass.dart';
 
 class AppHeader extends StatefulWidget implements PreferredSizeWidget {
   final bool isScrolled;

@@ -1,6 +1,8 @@
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:intl/date_symbol_data_local.dart';
+
 import 'package:skincare_recomendation/core/utils/app_helpers.dart';
 
 class DateProvider extends ChangeNotifier {
@@ -16,7 +18,7 @@ class DateProvider extends ChangeNotifier {
 
   Future<void> _init() async {
     if (_isInitialized) return;
-    
+
     try {
       await initializeDateFormatting('id_ID', null);
       _updateDate();
@@ -42,7 +44,7 @@ class DateProvider extends ChangeNotifier {
 
     _dailyTimer = Timer(durationToMidnight, () {
       _updateDate();
-      _scheduleNextUpdate(); 
+      _scheduleNextUpdate();
     });
   }
 

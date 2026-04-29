@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:skincare_recomendation/core/core.dart';
+import 'package:skincare_recomendation/core/themes/app_radius.dart';
+import 'package:skincare_recomendation/core/themes/app_theme.dart';
 
 class AppContainer extends StatelessWidget {
   final Widget? child;

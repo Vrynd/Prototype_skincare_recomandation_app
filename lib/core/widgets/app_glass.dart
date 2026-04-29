@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:skincare_recomendation/core/core.dart';
+import 'package:skincare_recomendation/core/themes/app_theme.dart';
 
 class AppGlass extends StatelessWidget {
   final Widget child;

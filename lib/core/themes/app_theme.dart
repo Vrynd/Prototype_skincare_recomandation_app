@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skincare_recomendation/core/themes/app_colors.dart';
-import 'package:skincare_recomendation/core/themes/app_typography.dart';
+import 'package:skincare_recomendation/core/themes/app_font.dart';
 
 class AppTheme {
   static final ColorScheme lightScheme = ColorScheme.fromSeed(
@@ -17,7 +17,7 @@ class AppTheme {
     useMaterial3: true,
     colorScheme: lightScheme,
     scaffoldBackgroundColor: AppColors.lightBackground,
-    textTheme: AppTypography.textTheme.apply(
+    textTheme: AppFont.textTheme.apply(
       bodyColor: lightScheme.onSurface,
       displayColor: lightScheme.onSurface,
     ),
@@ -27,7 +27,7 @@ class AppTheme {
     useMaterial3: true,
     colorScheme: darkScheme,
     scaffoldBackgroundColor: AppColors.darkBackground,
-    textTheme: AppTypography.textTheme.apply(
+    textTheme: AppFont.textTheme.apply(
       bodyColor: darkScheme.onSurface,
       displayColor: darkScheme.onSurface,
     ),

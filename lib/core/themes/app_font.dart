@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AppTypography {
+class AppFont {
   static final TextStyle _base = GoogleFonts.outfit();
 
   // Display
