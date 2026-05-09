@@ -1,98 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
+import 'package:skincare_recomendation/core/themes/app_radius.dart';
 import 'package:skincare_recomendation/core/themes/app_spacing.dart';
-import 'package:skincare_recomendation/core/themes/app_theme.dart';
-import 'package:skincare_recomendation/core/widgets/app_header.dart';
+import 'package:skincare_recomendation/core/widgets/app_container.dart';
 import 'package:skincare_recomendation/core/widgets/app_scafold.dart';
+import 'package:skincare_recomendation/core/widgets/app_location.dart';
 
-import 'package:skincare_recomendation/features/home/presentation/widgets/index_uv_card.dart';
-import 'package:skincare_recomendation/features/home/provider/date_provider.dart';
-import 'package:skincare_recomendation/features/home/provider/reminder_provider.dart';
-import 'package:skincare_recomendation/features/home/provider/location_provider.dart';
-
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  final ScrollController _scrollController = ScrollController();
-  final ValueNotifier<bool> _isScrolled = ValueNotifier<bool>(false);
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_scrollListener);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_scrollListener);
-    _scrollController.dispose();
-    _isScrolled.dispose();
-    super.dispose();
-  }
-
-  void _scrollListener() {
-    final scrolled = _scrollController.offset > 10;
-    if (scrolled != _isScrolled.value) {
-      _isScrolled.value = scrolled;
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => DateProvider(),
-      child: Builder(
-        builder: (context) {
-          final date = context.select<DateProvider, String>((p) => p.date);
-
-          return AppScafold(
-            backgroundColor: context.colors.lightBackground,
-            extendBody: true,
-            appBar: PreferredSize(
-              preferredSize: const Size.fromHeight(80.0),
-              child: ValueListenableBuilder<bool>(
-                valueListenable: _isScrolled,
-                builder: (context, scrolled, _) {
-                  final address = context.watch<LocationProvider>().address;
-
-                  return AppHeader(
-                    isScrolled: scrolled,
-                    title: address,
-                    label: date,
-                    avatarUrl: 'https://i.pravatar.cc/150?img=47',
-                  );
-                },
-              ),
-            ),
-            body: ListView(
-              controller: _scrollController,
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-              children: [
-                Consumer<ReminderProvider>(
-                  builder: (context, provider, _) {
-                    return IndexUvCard(
-                      value: 6,
-                      maxValue: '11+',
-                      category: 'Tinggi',
-                      airQuality: 'Sehat',
-                      isReminder: provider.isActive,
-                      onReminderChanged: (value) {
-                        provider.toggleReminder(value);
-                      },
-                    );
-                  },
-                ),
-                AppSpacing.v24,
-              ],
-            ),
-          );
-        },
+    return AppScafold(
+      statusBarIconBrightness: Brightness.light,
+      header: const AppLocation(
+        location: 'Kab Pati, Jawa Tengah',
+        greeting: 'Selamat Pagi Sarah!',
+        avatarUrl: 'https://i.pravatar.cc/150?img=47',
+      ),
+      body: ListView(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
+        children: [
+          AppContainer(
+            height: 160,
+            borderRadius: AppRadius.br24,
+            showShadow: false,
+            opacity: .6,
+          ),
+          AppSpacing.v16,
+          AppContainer(
+            height: 160,
+            borderRadius: AppRadius.br24,
+            showShadow: false,
+            opacity: .6,
+          ),
+        ],
       ),
     );
   }
