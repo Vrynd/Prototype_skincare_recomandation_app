@@ -33,7 +33,7 @@ class AppLocation extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: context.text.bodyLarge?.copyWith(
-                      color: context.colors.surface,
+                      color: context.colors.surface.withValues(alpha: .8),
                       fontWeight: FontWeight.w500,
                     ),
                   ),

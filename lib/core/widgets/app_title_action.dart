@@ -68,8 +68,8 @@ class AppTitleAction extends StatelessWidget {
                 title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: context.text.titleLarge?.copyWith(
-                  color: context.colors.onSurfaceVariant,
+                style: context.text.headlineMedium?.copyWith(
+                  color: context.colors.onSurface,
                 ),
               ),
               if (subtitle != null && subtitle!.isNotEmpty) ...[

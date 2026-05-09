@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:skincare_recomendation/core/themes/app_radius.dart';
 import 'package:skincare_recomendation/core/themes/app_spacing.dart';
-import 'package:skincare_recomendation/core/widgets/app_container.dart';
 import 'package:skincare_recomendation/core/widgets/app_scafold.dart';
 import 'package:skincare_recomendation/core/widgets/app_location.dart';
+import 'package:skincare_recomendation/features/home/presentation/widgets/summary.dart';
+import 'package:skincare_recomendation/features/home/presentation/widgets/index_uv.dart';
+import 'package:skincare_recomendation/features/home/models/uv_index_model.dart';
+import 'package:skincare_recomendation/features/home/models/skin_summary_model.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -18,23 +20,21 @@ class HomeScreen extends StatelessWidget {
         avatarUrl: 'https://i.pravatar.cc/150?img=47',
       ),
       body: ListView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 16,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
         children: [
-          AppContainer(
-            height: 160,
-            borderRadius: AppRadius.br24,
-            showShadow: false,
-            opacity: .6,
+          Summary(
+            data: SkinSummaryModel(
+              skinType: 'Normal',
+              skinCondition: 'Berjerawat',
+            ),
           ),
-          AppSpacing.v16,
-          AppContainer(
-            height: 160,
-            borderRadius: AppRadius.br24,
-            showShadow: false,
-            opacity: .6,
+          AppSpacing.v8,
+
+          IndexUV(
+            data: UvIndexModel(
+              currentUv: 8,
+              forecastUv: [8, 5, 9, 4, 12, 6, 7],
+            ),
           ),
         ],
       ),

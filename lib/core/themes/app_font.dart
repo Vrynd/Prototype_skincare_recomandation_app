@@ -6,7 +6,7 @@ class AppFont {
 
   // Display
   static final TextStyle displayLarge = _base.copyWith(
-    fontSize: 64,
+    fontSize: 32,
     fontWeight: FontWeight.w500,
     height: 1.0,
     letterSpacing: -2,

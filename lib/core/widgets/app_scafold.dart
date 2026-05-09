@@ -44,7 +44,7 @@ class AppScafold extends StatelessWidget {
     _sytemUIOverlay();
 
     return Scaffold(
-      backgroundColor: backgroundColor ?? const Color(0xFF0F172A),
+      backgroundColor: backgroundColor ?? const Color(0xFF0D1B0E),
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: floatingActionButton,
       body: Stack(
@@ -53,15 +53,15 @@ class AppScafold extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.4,
             width: double.infinity,
             decoration: const BoxDecoration(
-              gradient: RadialGradient(
-                center: Alignment(0.0, -0.5),
-                radius: 1.3,
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFF3B82F6),
-                  Color(0xFF1E3A8A),
-                  Color(0xFF0F172A),
+                  Color(0xFF3D6A56),
+                  Color(0xFF234433),
+                  Color(0xFF0D1B0E),
                 ],
-                stops: [0.0, 0.6, 1.0],
+                stops: [0.0, 0.5, 1.0],
               ),
             ),
           ),
