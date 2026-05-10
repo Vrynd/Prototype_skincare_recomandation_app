@@ -31,7 +31,7 @@ class Summary extends StatelessWidget {
           iconColor: context.colors.primary,
         ),
         _SummaryItem(
-          label: 'Kondisi Kulit',
+          label: 'Masalah Kulit',
           value: data.skinCondition,
           icon: HugeIcons.strokeRoundedActivity03,
           iconColor: context.colors.tertiary,

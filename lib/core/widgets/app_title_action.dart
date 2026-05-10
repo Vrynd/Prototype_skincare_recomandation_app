@@ -105,16 +105,16 @@ class AppTitleAction extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               elevation: 0,
               minimumSize: const Size(38, 38),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              backgroundColor: context.colors.primary,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              backgroundColor: context.colors.onSurface,
               shape: RoundedRectangleBorder(
-                borderRadius: AppRadius.br24
+                borderRadius: AppRadius.br20
               ),
             ),
             child: HugeIcon(
-              icon: HugeIcons.strokeRoundedArrowRight01,
+              icon: HugeIcons.strokeRoundedArrowRight02,
               color: context.colors.onPrimary,
-              size: 20,
+              size: 24,
             ),
           );
         }

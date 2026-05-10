@@ -19,7 +19,7 @@ class AppSeparator extends StatelessWidget {
     super.key,
     this.color,
     this.padding = const EdgeInsets.symmetric(horizontal: 6),
-  }): size = 3.0,
+  }): size = 4.0,
       opacity = 0.5;
 
   const AppSeparator.large({
