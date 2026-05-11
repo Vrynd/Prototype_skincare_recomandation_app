@@ -25,6 +25,7 @@ dependencies:
   supabase_flutter: ^2.12.2
   geolocator: ^14.0.2
   geocoding: ^4.0.0
+  percent_indicator: ^4.2.5
 
 dev_dependencies:
   flutter_test:

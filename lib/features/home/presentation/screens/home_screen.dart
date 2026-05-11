@@ -4,6 +4,8 @@ import 'package:skincare_recomendation/core/themes/app_spacing.dart';
 import 'package:skincare_recomendation/core/widgets/app_scafold.dart';
 import 'package:skincare_recomendation/core/widgets/app_location.dart';
 import 'package:skincare_recomendation/core/widgets/app_title_action.dart';
+import 'package:skincare_recomendation/features/home/models/last_recomendation_model.dart';
+import 'package:skincare_recomendation/features/home/presentation/widgets/last_recomendation.dart';
 import 'package:skincare_recomendation/features/home/presentation/widgets/summary.dart';
 import 'package:skincare_recomendation/features/home/presentation/widgets/index_uv.dart';
 import 'package:skincare_recomendation/features/home/presentation/widgets/quick_action.dart';
@@ -24,12 +26,13 @@ class HomeScreen extends StatelessWidget {
         avatarUrl: 'https://i.pravatar.cc/150?img=47',
       ),
       body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
         children: [
           Summary(
             data: SkinSummaryModel(
               skinType: 'Normal',
               skinCondition: 'Berjerawat',
+              lastUpdated: '10 Januari 2026',
             ),
           ),
           AppSpacing.v8,
@@ -46,20 +49,26 @@ class HomeScreen extends StatelessWidget {
           QuickAction(
             data: [
               QuickActionModel(
-                title: 'My Skin',
+                title: 'Skin Condition',
                 icon: HugeIcons.strokeRoundedFaceId,
+                onTap: () {},
               ),
               QuickActionModel(
                 title: 'Skincare Match',
                 icon: HugeIcons.strokeRoundedPuzzle,
+                onTap: () {},
               ),
               QuickActionModel(
                 title: 'Daily Routine',
                 icon: HugeIcons.strokeRoundedTaskDaily02,
+                isComingSoon: true,
+                onTap: () {},
               ),
               QuickActionModel(
                 title: 'Skin Preference',
                 icon: HugeIcons.strokeRoundedSlidersHorizontal,
+                isComingSoon: true,
+                onTap: () {},
               ),
             ],
           ),
@@ -71,6 +80,31 @@ class HomeScreen extends StatelessWidget {
             onPressed: () {},
           ),
           AppSpacing.v16,
+          LastRecomendation(
+            data: [
+              LastRecomendationModel(
+                brandName: 'Somethinc',
+                productName: 'Hydrating Gel Moisturizer',
+                category: 'Moisturizer',
+                uvIndex: 8,
+                createdAt: DateTime.now(),
+              ),
+              LastRecomendationModel(
+                brandName: 'Skin Game',
+                productName: 'Sunscreen SPF 50+',
+                category: 'Sunscreen',
+                uvIndex: 10,
+                createdAt: DateTime.now().subtract(const Duration(hours: 2)),
+              ),
+              LastRecomendationModel(
+                brandName: 'Cetaphil',
+                productName: 'Gentle Cleanser',
+                category: 'Cleanser',
+                uvIndex: 4,
+                createdAt: DateTime.now().subtract(const Duration(days: 1)),
+              ),
+            ],
+          ),
         ],
       ),
     );

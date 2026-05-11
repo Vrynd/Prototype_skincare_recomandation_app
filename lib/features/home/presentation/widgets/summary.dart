@@ -9,17 +9,10 @@ import 'package:skincare_recomendation/features/home/presentation/widgets/topogr
 class Summary extends StatelessWidget {
   final SkinSummaryModel data;
 
-  const Summary({
-    super.key,
-    required this.data,
-  });
+  const Summary({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
-    return _body(context);
-  }
-
-  Widget _body(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       spacing: 8,
@@ -27,12 +20,14 @@ class Summary extends StatelessWidget {
         _SummaryItem(
           label: 'Jenis Kulit',
           value: data.skinType,
+          lastUpdated: data.lastUpdated,
           icon: HugeIcons.strokeRoundedDroplet,
           iconColor: context.colors.primary,
         ),
         _SummaryItem(
           label: 'Masalah Kulit',
           value: data.skinCondition,
+          lastUpdated: data.lastUpdated,
           icon: HugeIcons.strokeRoundedActivity03,
           iconColor: context.colors.tertiary,
         ),
@@ -44,12 +39,14 @@ class Summary extends StatelessWidget {
 class _SummaryItem extends StatelessWidget {
   final String label;
   final String value;
+  final String lastUpdated;
   final dynamic icon;
   final Color iconColor;
 
   const _SummaryItem({
     required this.label,
     required this.value,
+    required this.lastUpdated,
     required this.icon,
     required this.iconColor,
   });
@@ -74,39 +71,21 @@ class _SummaryItem extends StatelessWidget {
                   ),
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
-                  spacing: 16,
+                  spacing: 10,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          label,
-                          style: context.text.bodyMedium?.copyWith(
-                            color: context.colors.onSurfaceVariant,
-                          ),
-                        ),
-                        HugeIcon(
-                          icon: icon,
-                          size: 20,
-                          color: iconColor,
-                        ),
-                      ],
+                    _ItemHeader(
+                      label: label,
+                      icon: icon,
+                      iconColor: iconColor,
                     ),
-                    Text(
-                      value,
-                      maxLines: 1,
-                      style: context.text.headlineMedium?.copyWith(
-                        color: context.colors.onSurface,
-                        fontWeight: FontWeight.w600,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                    _ItemValue(
+                      value: value,
+                      lastUpdated: lastUpdated,
                     ),
                   ],
                 ),
@@ -115,6 +94,72 @@ class _SummaryItem extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ItemHeader extends StatelessWidget {
+  final String label;
+  final dynamic icon;
+  final Color iconColor;
+
+  const _ItemHeader({
+    required this.label,
+    required this.icon,
+    required this.iconColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          label,
+          style: context.text.bodyMedium?.copyWith(
+            color: context.colors.onSurfaceVariant,
+          ),
+        ),
+        HugeIcon(icon: icon, size: 20, color: iconColor),
+      ],
+    );
+  }
+}
+
+class _ItemValue extends StatelessWidget {
+  final String value;
+  final String lastUpdated;
+
+  const _ItemValue({
+    required this.value,
+    required this.lastUpdated,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      spacing: 4,
+      children: [
+        Text(
+          value,
+          maxLines: 1,
+          style: context.text.headlineMedium?.copyWith(
+            color: context.colors.onSurface,
+            fontWeight: FontWeight.w600,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        Text(
+          'Terakhir, $lastUpdated',
+          style: context.text.labelSmall?.copyWith(
+            color: context.colors.onSurfaceVariant.withValues(alpha: .5),
+            fontSize: 10,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -55,64 +55,105 @@ class _QuickActionItem extends StatelessWidget {
         borderRadius: AppRadius.br24,
         showShadow: false,
         padding: EdgeInsets.zero,
-        child: Stack(
-          children: [
+        child: InkWell(
+          onTap: data.isComingSoon ? null : data.onTap,
+          borderRadius: AppRadius.br24,
+          child: Stack(
+            children: [
             Positioned(
-              bottom: -60,
-              left: -30,
+              top: -40,
+              left: -20,
+              child: Container(
+                width: 140,
+                height: 140,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      context.colors.lime.withValues(alpha: 0.7),
+                      context.colors.lime.withValues(alpha: 0),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              top: -20,
+              right: -30,
               child: Container(
                 width: 160,
                 height: 160,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
-                    center: Alignment.topLeft,
-                    radius: 0.8,
                     colors: [
-                      context.colors.primary.withValues(alpha: 0.15),
-                      context.colors.primary.withValues(alpha: 0.0),
+                      context.colors.yellow.withValues(alpha: 0.5),
+                      context.colors.yellow.withValues(alpha: 0),
                     ],
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                spacing: 8,
-                children: [
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: AppContainer(
-                      width: 44,
-                      height: 44,
+              if (data.isComingSoon)
+                Positioned(
+                  top: 16,
+                  left: 16,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
                       color: context.colors.primaryContainer,
-                      showShadow: false,
-                      showBorder: false,
-                      padding: EdgeInsets.zero,
-                      shape: BoxShape.circle,
-                      child: Center(
-                        child: HugeIcon(
-                          icon: data.icon,
-                          size: 22,
-                          color: context.colors.primary,
-                        ),
+                      borderRadius: AppRadius.br8,
+                    ),
+                    child: Text(
+                      "Segera",
+                      style: context.text.labelSmall?.copyWith(
+                        color: context.colors.onSecondaryContainer,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
-                  Text(
-                    data.title.replaceAll(' ', '\n'),
-                    style: context.text.titleMedium?.copyWith(
-                      color: context.colors.onSurfaceVariant,
-                      fontWeight: FontWeight.w600,
+                ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 8,
+                  children: [
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: AppContainer(
+                        width: 45,
+                        height: 45,
+                        color: context.colors.onSurfaceVariant,
+                        opacity: 0.05,
+                        showShadow: false,
+                        padding: EdgeInsets.zero,
+                        shape: BoxShape.circle,
+                        child: Center(
+                          child: HugeIcon(
+                            icon: data.icon,
+                            size: 22,
+                            color: context.colors.onSurface,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                    Text(
+                      data.title.replaceAll(' ', '\n'),
+                      style: context.text.titleMedium?.copyWith(
+                        color: context.colors.onSurfaceVariant,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
