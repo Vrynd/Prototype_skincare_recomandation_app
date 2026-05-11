@@ -19,8 +19,8 @@ class PermissionDenied extends LocationException {
 }
 
 class PermanentlyDenied extends LocationException {
-  PermanentlyDenied() 
-      : super('Izin lokasi ditolak permanen. Aktifkan di pengaturan HP.');
+  PermanentlyDenied()
+    : super('Izin lokasi ditolak permanen. Aktifkan di pengaturan HP.');
 }
 
 class GeocodingFailed extends LocationException {
@@ -64,9 +64,28 @@ class LocationService {
 
       if (placemarks.isNotEmpty) {
         final place = placemarks.first;
-        final city = place.subAdministrativeArea ?? place.locality ?? 'Tidak diketahui';
-        final province = place.administrativeArea ?? '';
-        return province.isNotEmpty ? '$city, $province' : city;
+
+        String village = place.subLocality ?? '';
+        String district = (place.locality ?? '').replaceAll(
+          'Kecamatan',
+          'Kec.',
+        );
+        String regency = (place.subAdministrativeArea ?? '').replaceAll(
+          'Kabupaten',
+          'Kab.',
+        );
+        String province = place.administrativeArea ?? '';
+
+        final addressParts = [
+          village,
+          district,
+          regency,
+          province,
+        ].where((s) => s.isNotEmpty).toList();
+
+        if (addressParts.isEmpty) return 'Lokasi tidak diketahui';
+
+        return addressParts.take(2).join(', ');
       }
       return null;
     } catch (e) {

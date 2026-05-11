@@ -7,8 +7,13 @@ import 'package:skincare_recomendation/features/home/models/quick_action_model.d
 
 class QuickAction extends StatelessWidget {
   final List<QuickActionModel> data;
+  final void Function(int index) onItemTap;
 
-  const QuickAction({super.key, required this.data});
+  const QuickAction({
+    super.key,
+    required this.data,
+    required this.onItemTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +28,16 @@ class QuickAction extends StatelessWidget {
           spacing: 8,
           mainAxisSize: MainAxisSize.min,
           children: [
-            _QuickActionItem(data: data[i]),
+            _QuickActionItem(
+              data: data[i],
+              onTap: data[i].isComingSoon ? null : () => onItemTap(i),
+            ),
             if (i + 1 < data.length)
-              _QuickActionItem(data: data[i + 1])
+              _QuickActionItem(
+                data: data[i + 1],
+                onTap:
+                    data[i + 1].isComingSoon ? null : () => onItemTap(i + 1),
+              )
             else
               const Expanded(flex: 2, child: SizedBox()),
           ],
@@ -43,8 +55,9 @@ class QuickAction extends StatelessWidget {
 
 class _QuickActionItem extends StatelessWidget {
   final QuickActionModel data;
+  final VoidCallback? onTap;
 
-  const _QuickActionItem({required this.data});
+  const _QuickActionItem({required this.data, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +69,7 @@ class _QuickActionItem extends StatelessWidget {
         showShadow: false,
         padding: EdgeInsets.zero,
         child: InkWell(
-          onTap: data.isComingSoon ? null : data.onTap,
+          onTap: onTap,
           borderRadius: AppRadius.br24,
           child: Stack(
             children: [

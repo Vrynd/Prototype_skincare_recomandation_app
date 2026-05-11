@@ -8,7 +8,6 @@ import 'package:skincare_recomendation/core/services/storage_service.dart';
 import 'package:skincare_recomendation/core/services/location_service.dart';
 import 'package:skincare_recomendation/core/themes/app_theme.dart';
 
-import 'package:skincare_recomendation/features/home/provider/reminder_provider.dart';
 import 'package:skincare_recomendation/features/home/provider/location_provider.dart';
 import 'package:skincare_recomendation/features/navigations/provider/bottom_bar_provider.dart';
 
@@ -23,9 +22,6 @@ void main() async {
       providers: [
         Provider<StorageService>.value(value: storageService),
         Provider<LocationService>(create: (_) => LocationService()),
-        ChangeNotifierProvider(
-          create: (context) => ReminderProvider(context.read<StorageService>()),
-        ),
         ChangeNotifierProvider(
           create: (context) => LocationProvider(
             context.read<LocationService>(),

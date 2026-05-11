@@ -6,14 +6,14 @@ import 'package:skincare_recomendation/core/themes/app_radius.dart';
 import 'package:skincare_recomendation/core/themes/app_theme.dart';
 import 'package:skincare_recomendation/core/widgets/app_container.dart';
 import 'package:skincare_recomendation/core/widgets/app_divider.dart';
-import 'package:go_router/go_router.dart';
 import 'package:skincare_recomendation/core/widgets/app_separator.dart';
 import 'package:skincare_recomendation/features/home/models/last_recomendation_model.dart';
 
 class LastRecomendation extends StatelessWidget {
   final List<LastRecomendationModel> data;
+  final void Function(LastRecomendationModel item) onTap;
 
-  const LastRecomendation({super.key, required this.data});
+  const LastRecomendation({super.key, required this.data, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -21,55 +21,56 @@ class LastRecomendation extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       spacing: 12,
-      children: data.map((item) => _RecomendationCard(data: item)).toList(),
+      children: data
+          .map(
+            (item) => _RecomendationCard(data: item, onTap: () => onTap(item)),
+          )
+          .toList(),
     );
   }
 }
 
 class _RecomendationCard extends StatelessWidget {
   final LastRecomendationModel data;
+  final VoidCallback onTap;
 
-  const _RecomendationCard({required this.data});
+  const _RecomendationCard({required this.data, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        context.pushNamed(
-          'last-recommendation',
-          extra: data.productName,
-        );
-      },
+      onTap: onTap,
       child: AppContainer(
         opacity: 0.8,
         showShadow: false,
         borderRadius: AppRadius.br24,
         padding: EdgeInsets.zero,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              spacing: 12,
-              children: [
-                Expanded(
-                  child: _ProductInfo(
-                    title: data.productName,
-                    brandName: data.brandName,
-                    category: data.category,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                spacing: 12,
+                children: [
+                  Expanded(
+                    child: _ProductInfo(
+                      title: data.productName,
+                      brandName: data.brandName,
+                      category: data.category,
+                    ),
                   ),
-                ),
-                _UVIndicator(uvIndex: data.uvIndex, color: data.uvColor),
-              ],
+                  _UVIndicator(uvIndex: data.uvIndex, color: data.uvColor),
+                ],
+              ),
             ),
-          ),
-          const AppDivider.dashed(),
-          _Footer(date: data.createdAt),
-        ],
+            const AppDivider.dashed(),
+            _Footer(date: data.createdAt),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }
 

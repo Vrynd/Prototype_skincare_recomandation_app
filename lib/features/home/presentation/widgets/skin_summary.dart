@@ -6,10 +6,10 @@ import 'package:skincare_recomendation/core/widgets/app_container.dart';
 import 'package:skincare_recomendation/features/home/models/skin_summary_model.dart';
 import 'package:skincare_recomendation/features/home/presentation/widgets/topography_painter.dart';
 
-class Summary extends StatelessWidget {
+class SkinSummary extends StatelessWidget {
   final SkinSummaryModel data;
 
-  const Summary({super.key, required this.data});
+  const SkinSummary({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -78,15 +78,8 @@ class _SummaryItem extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   spacing: 10,
                   children: [
-                    _ItemHeader(
-                      label: label,
-                      icon: icon,
-                      iconColor: iconColor,
-                    ),
-                    _ItemValue(
-                      value: value,
-                      lastUpdated: lastUpdated,
-                    ),
+                    _ItemHeader(label: label, icon: icon, iconColor: iconColor),
+                    _ItemValue(value: value, lastUpdated: lastUpdated),
                   ],
                 ),
               ),
@@ -131,10 +124,7 @@ class _ItemValue extends StatelessWidget {
   final String value;
   final String lastUpdated;
 
-  const _ItemValue({
-    required this.value,
-    required this.lastUpdated,
-  });
+  const _ItemValue({required this.value, required this.lastUpdated});
 
   @override
   Widget build(BuildContext context) {

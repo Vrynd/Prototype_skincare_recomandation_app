@@ -4,10 +4,10 @@ import 'package:skincare_recomendation/core/themes/app_theme.dart';
 import 'package:skincare_recomendation/core/widgets/app_container.dart';
 import 'package:skincare_recomendation/features/home/models/uv_index_model.dart';
 
-class IndexUV extends StatelessWidget {
+class UvIndex extends StatelessWidget {
   final UvIndexModel data;
 
-  const IndexUV({super.key, required this.data});
+  const UvIndex({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -98,10 +98,7 @@ class _UvBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         _CurrentUvValue(value: currentUv),
-        _ForecastBars(
-          forecastUv: forecastUv,
-          activeIndex: activeIndex,
-        ),
+        _ForecastBars(forecastUv: forecastUv, activeIndex: activeIndex),
       ],
     );
   }
@@ -140,10 +137,7 @@ class _ForecastBars extends StatelessWidget {
   final List<int> forecastUv;
   final int activeIndex;
 
-  const _ForecastBars({
-    required this.forecastUv,
-    required this.activeIndex,
-  });
+  const _ForecastBars({required this.forecastUv, required this.activeIndex});
 
   @override
   Widget build(BuildContext context) {
