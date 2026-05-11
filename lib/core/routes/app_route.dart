@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skincare_recomendation/features/home/presentation/screens/home_screen.dart';
+import 'package:skincare_recomendation/features/home/presentation/screens/last_recommendation_screen.dart';
 import 'package:skincare_recomendation/features/navigations/presentation/screens/navigation_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -59,6 +60,14 @@ class AppRoute {
             ],
           ),
         ],
+      ),
+      GoRoute(
+        path: '/last-recommendation',
+        name: 'last-recommendation',
+        builder: (context, state) {
+          final title = state.extra as String? ?? 'Rekomendasi';
+          return LastRecommendationScreen(title: title);
+        },
       ),
     ],
   );

@@ -6,6 +6,7 @@ import 'package:skincare_recomendation/core/themes/app_radius.dart';
 import 'package:skincare_recomendation/core/themes/app_theme.dart';
 import 'package:skincare_recomendation/core/widgets/app_container.dart';
 import 'package:skincare_recomendation/core/widgets/app_divider.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skincare_recomendation/core/widgets/app_separator.dart';
 import 'package:skincare_recomendation/features/home/models/last_recomendation_model.dart';
 
@@ -32,11 +33,18 @@ class _RecomendationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppContainer(
-      opacity: 0.8,
-      showShadow: false,
-      borderRadius: AppRadius.br24,
-      padding: EdgeInsets.zero,
+    return GestureDetector(
+      onTap: () {
+        context.pushNamed(
+          'last-recommendation',
+          extra: data.productName,
+        );
+      },
+      child: AppContainer(
+        opacity: 0.8,
+        showShadow: false,
+        borderRadius: AppRadius.br24,
+        padding: EdgeInsets.zero,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -61,7 +69,7 @@ class _RecomendationCard extends StatelessWidget {
           _Footer(date: data.createdAt),
         ],
       ),
-    );
+    ));
   }
 }
 
