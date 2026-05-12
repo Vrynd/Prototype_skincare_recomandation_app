@@ -1,52 +1,25 @@
 import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:skincare_recomendation/core/routes/app_route.dart';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:skincare_recomendation/app.dart';
 import 'package:skincare_recomendation/core/services/storage_service.dart';
-import 'package:skincare_recomendation/core/services/location_service.dart';
-import 'package:skincare_recomendation/core/themes/app_theme.dart';
 
-import 'package:skincare_recomendation/features/home/provider/location_provider.dart';
-import 'package:skincare_recomendation/features/navigations/provider/bottom_bar_provider.dart';
-
-void main() async {
+Future<void> main() async {
+  // Pastikan binding Flutter sudah siap
   WidgetsFlutterBinding.ensureInitialized();
 
+  // 1. Inisialisasi Supabase
+  await Supabase.initialize(
+    url: 'https://dedqbqjsyykcfsqwpyag.supabase.co',
+    anonKey: 'sb_publishable_WHQ0SDf2uTUTUnHY1ixK9g_Bbe4hbVM',
+  );
+
+  // 2. Inisialisasi SharedPreferences & Local Storage Service
   final prefs = await SharedPreferences.getInstance();
   final storageService = StorageService(prefs);
 
+  // 3. Jalankan Aplikasi
   runApp(
-    MultiProvider(
-      providers: [
-        Provider<StorageService>.value(value: storageService),
-        Provider<LocationService>(create: (_) => LocationService()),
-        ChangeNotifierProvider(
-          create: (context) => LocationProvider(
-            context.read<LocationService>(),
-            context.read<StorageService>(),
-          ),
-        ),
-        ChangeNotifierProvider(create: (context) => BottomBarProvider()),
-      ],
-      child: const MyApp(),
-    ),
+    MyApp(storageService: storageService),
   );
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
-      routerConfig: AppRoute.router,
-    );
-  }
 }
