@@ -9,7 +9,11 @@ class AppScafold extends StatelessWidget {
   final Widget? bottomNavigationBar;
   final Widget? floatingActionButton;
   final Color? backgroundColor;
+  final Color? bodyBackgroundColor;
   final bool isFullScreen;
+  final bool isBalanced;
+  final int headerFlex;
+  final int bodyFlex;
   final Brightness statusBarIconBrightness;
 
   const AppScafold({
@@ -19,9 +23,16 @@ class AppScafold extends StatelessWidget {
     this.bottomNavigationBar,
     this.floatingActionButton,
     this.backgroundColor,
+    this.bodyBackgroundColor,
     this.isFullScreen = false,
+    this.isBalanced = false,
+    this.headerFlex = 2,
+    this.bodyFlex = 8,
     this.statusBarIconBrightness = Brightness.dark,
   });
+
+  double _getRatio() =>
+      isBalanced ? (headerFlex / (headerFlex + bodyFlex)) : 0.4;
 
   void _sytemUIOverlay() {
     if (isFullScreen) {
@@ -44,38 +55,62 @@ class AppScafold extends StatelessWidget {
     _sytemUIOverlay();
 
     return Scaffold(
-      backgroundColor: backgroundColor ?? const Color(0xFF0D1B0E),
+      backgroundColor: backgroundColor ?? context.colors.primary.withValues(alpha: 0.8),
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: floatingActionButton,
       body: Stack(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.4,
+            height: (MediaQuery.of(context).size.height * _getRatio()) + 20,
             width: double.infinity,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF3D6A56),
-                  Color(0xFF234433),
-                  Color(0xFF0D1B0E),
-                ],
-                stops: [0.0, 0.5, 1.0],
-              ),
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(color: context.colors.primary),
+            child: Stack(
+              children: [
+                // Layer Dekorasi 1 (Luar - Presisi Corner)
+                Positioned(
+                  top: -110,
+                  right: -120,
+                  child: Container(
+                    width: 320,
+                    height: 320,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white.withValues(alpha: .08),
+                    ),
+                  ),
+                ),
+                // Layer Dekorasi 2 (Dalam - Presisi Corner)
+                Positioned(
+                  top: -60,
+                  right: -60,
+                  child: Container(
+                    width: 220,
+                    height: 220,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white.withValues(alpha: .12),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
 
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            spacing: isBalanced ? 0 : 2,
             children: [
-              if (header != null) header!,
-
-              const SizedBox(height: 4),
+              if (header != null)
+                isBalanced
+                    ? Expanded(flex: headerFlex, child: header!)
+                    : header!,
 
               Expanded(
+                flex: isBalanced ? bodyFlex : 1,
                 child: AppContainer(
-                  color: context.colors.lightBackground,
+                  color: bodyBackgroundColor ?? context.colors.lightBackground,
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(28),
                   ),

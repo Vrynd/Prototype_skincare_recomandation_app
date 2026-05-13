@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skincare_recomendation/features/auth/presentation/screens/login_screen.dart';
 import 'package:skincare_recomendation/features/home/presentation/screens/home_screen.dart';
 import 'package:skincare_recomendation/features/home/presentation/screens/last_recommendation_screen.dart';
 import 'package:skincare_recomendation/features/navigations/presentation/screens/navigation_screen.dart';
@@ -9,7 +10,7 @@ final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(de
 class AppRoute {
   static final router = GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: '/',
+    initialLocation: '/login',
     debugLogDiagnostics: true,
     routes: [
       StatefulShellRoute.indexedStack(
@@ -40,8 +41,8 @@ class AppRoute {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/riwayat',
-                name: 'riwayat',
+                path: '/history',
+                name: 'history',
                 builder: (context, state) => const Scaffold(
                   body: Center(child: Text('Riwayat Screen')),
                 ),
@@ -51,8 +52,8 @@ class AppRoute {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/akun',
-                name: 'akun',
+                path: '/myaccount',
+                name: 'myaccount',
                 builder: (context, state) => const Scaffold(
                   body: Center(child: Text('Akun Saya Screen')),
                 ),
@@ -68,6 +69,11 @@ class AppRoute {
           final title = state.extra as String? ?? 'Rekomendasi';
           return LastRecommendationScreen(title: title);
         },
+      ),
+      GoRoute(
+        path: '/login',
+        name: 'login',
+        builder: (context, state) => const LoginScreen(),
       ),
     ],
   );

@@ -4,103 +4,150 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:skincare_recomendation/core/themes/app_theme.dart';
 import 'package:skincare_recomendation/core/widgets/app_container.dart';
 
-class AppNavigation extends StatelessWidget implements PreferredSizeWidget {
+class AppNavigation extends StatelessWidget {
   final bool isScrolled;
   final String title;
+  final String? subtitle;
   final Widget? actionIcon;
   final VoidCallback? onActionTap;
   final Widget? leading;
-  final double height;
+  final Widget? trailing;
+  final bool showBackButton;
+  final double? height;
+  final Color? backgroundColor;
+  final EdgeInsetsGeometry? padding;
+  final TextStyle? titleStyle;
+  final TextStyle? subtitleStyle;
+  final bool centerTitle;
+  final Color? iconColor;
 
   const AppNavigation({
     super.key,
     this.isScrolled = false,
     required this.title,
+    this.subtitle,
     this.actionIcon,
     this.onActionTap,
     this.leading,
-    this.height = 70,
+    this.trailing,
+    this.showBackButton = true,
+    this.height,
+    this.backgroundColor,
+    this.padding,
+    this.titleStyle,
+    this.subtitleStyle,
+    this.centerTitle = false,
+    this.iconColor,
   });
-
-  @override
-  Size get preferredSize => Size.fromHeight(height);
 
   @override
   Widget build(BuildContext context) {
     final resolvedLeading = _buildLeading(context);
-    final hasLeading = resolvedLeading != null;
+    final resolvedTrailing = _buildTrailing(context);
 
-    return AppBar(
-      toolbarHeight: height,
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      scrolledUnderElevation: 0,
-      centerTitle: false,
-      automaticallyImplyLeading: false,
-      titleSpacing: 16,
-      leadingWidth: hasLeading ? 60 : 0,
-      leading: resolvedLeading,
-      title: _buildTitle(context, hasLeading),
-      actions: _buildActions(context),
+    return Container(
+      decoration: BoxDecoration(
+        color: backgroundColor ?? Colors.transparent,
+        boxShadow: isScrolled
+            ? [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                )
+              ]
+            : null,
+      ),
+      child: SafeArea(
+        bottom: false,
+        child: Container(
+          height: height,
+          padding: padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              if (resolvedLeading != null) ...[
+                resolvedLeading,
+                const SizedBox(width: 12),
+              ],
+              Expanded(
+                child: _buildTitle(context),
+              ),
+              if (resolvedTrailing != null) ...[
+                const SizedBox(width: 12),
+                resolvedTrailing,
+              ],
+            ],
+          ),
+        ),
+      ),
     );
   }
 
   Widget? _buildLeading(BuildContext context) {
-    Widget? activeLeading = leading;
-    final canPop = Navigator.of(context).canPop();
+    if (leading != null) return leading;
 
-    if (activeLeading == null && canPop) {
-      activeLeading = _buildCircularButton(
+    final canPop = Navigator.of(context).canPop();
+    if (showBackButton && canPop) {
+      return _buildCircularButton(
         context: context,
         onTap: () => context.pop(),
         icon: HugeIcon(
           icon: HugeIcons.strokeRoundedArrowLeft02,
-          color: context.colors.surface,
+          color: iconColor ?? context.colors.surface,
           size: 24,
         ),
-      );
-    }
-
-    if (activeLeading != null) {
-      return Padding(
-        padding: const EdgeInsets.only(left: 16),
-        child: Center(child: activeLeading),
       );
     }
 
     return null;
   }
 
-  Widget _buildTitle(BuildContext context, bool hasLeading) {
-    return Padding(
-      padding: hasLeading ? EdgeInsets.zero : const EdgeInsets.only(left: 16.0),
-      child: Text(
-        title,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: context.text.headlineSmall?.copyWith(
-          color: context.colors.surface,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
+  Widget? _buildTrailing(BuildContext context) {
+    if (trailing != null) return trailing;
+
+    if (actionIcon != null && onActionTap != null) {
+      return _buildCircularButton(
+        context: context,
+        onTap: onActionTap!,
+        icon: actionIcon!,
+      );
+    }
+
+    return null;
   }
 
-  List<Widget>? _buildActions(BuildContext context) {
-    if (actionIcon == null || onActionTap == null) return null;
-
-    return [
-      Padding(
-        padding: const EdgeInsets.only(right: 16),
-        child: Center(
-          child: _buildCircularButton(
-            context: context,
-            onTap: onActionTap!,
-            icon: actionIcon!,
-          ),
+  Widget _buildTitle(BuildContext context) {
+    return Column(
+      crossAxisAlignment: centerTitle ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          title,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: centerTitle ? TextAlign.center : TextAlign.start,
+          style: titleStyle ??
+              context.text.headlineSmall?.copyWith(
+                color: context.colors.surface,
+                fontWeight: FontWeight.bold,
+              ),
         ),
-      ),
-    ];
+        if (subtitle != null) ...[
+          const SizedBox(height: 2),
+          Text(
+            subtitle!,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: centerTitle ? TextAlign.center : TextAlign.start,
+            style: subtitleStyle ??
+                context.text.bodySmall?.copyWith(
+                  color: context.colors.surface.withValues(alpha: 0.7),
+                ),
+          ),
+        ],
+      ],
+    );
   }
 
   Widget _buildCircularButton({
@@ -112,8 +159,8 @@ class AppNavigation extends StatelessWidget implements PreferredSizeWidget {
       borderRadius: BorderRadius.circular(50),
       onTap: onTap,
       child: AppContainer(
-        width: 44,
-        height: 44,
+        width: 46,
+        height: 46,
         shape: BoxShape.circle,
         padding: EdgeInsets.zero,
         opacity: 0.2,
