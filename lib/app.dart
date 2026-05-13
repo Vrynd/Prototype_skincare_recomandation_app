@@ -8,6 +8,7 @@ import 'package:skincare_recomendation/core/themes/app_theme.dart';
 import 'package:skincare_recomendation/features/home/provider/location_provider.dart';
 import 'package:skincare_recomendation/features/auth/provider/password_visibility_provider.dart';
 import 'package:skincare_recomendation/features/auth/provider/remember_me_provider.dart';
+import 'package:skincare_recomendation/features/auth/provider/register_provider.dart';
 import 'package:skincare_recomendation/features/navigations/provider/bottom_bar_provider.dart';
 
 class MyApp extends StatelessWidget {
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => BottomBarProvider()),
         ChangeNotifierProvider(create: (context) => PasswordVisibilityProvider()),
         ChangeNotifierProvider(create: (context) => RememberMeProvider()),
+        ChangeNotifierProvider(create: (context) => PasswordIndicatorProvider()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

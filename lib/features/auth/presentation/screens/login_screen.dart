@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:skincare_recomendation/core/themes/app_spacing.dart';
@@ -7,12 +6,13 @@ import 'package:skincare_recomendation/core/themes/app_theme.dart';
 import 'package:skincare_recomendation/core/widgets/app_button.dart';
 import 'package:skincare_recomendation/core/widgets/app_navigation.dart';
 import 'package:skincare_recomendation/core/widgets/app_scafold.dart';
+import 'package:skincare_recomendation/core/widgets/app_text_field.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/footer_form.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/header_form.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/remember_recovery.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/social_button.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/social_divider.dart';
-import 'package:skincare_recomendation/features/auth/presentation/widgets/text_field_form.dart';
+import 'package:skincare_recomendation/core/utils/app_validators.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -26,10 +26,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  void _handleLogin() {
-    if (_formKey.currentState!.validate()) {
-      
-    }
+  void _tapToLogin() async {}
+
+  void _goToRegister() {
+    context.pushReplacementNamed('register');
   }
 
   @override
@@ -63,77 +63,58 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     const HeaderForm(),
                     AppSpacing.v24,
+
                     Form(
                       key: _formKey,
                       child: AutofillGroup(
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           spacing: 24,
                           children: [
-                            TextFieldForm(
+                            AppTextField(
                               controller: _emailController,
-                              hintText: 'Email Address',
+                              hintText: 'Alamat Email',
                               icon: HugeIcons.strokeRoundedMail01,
-                              keyboardType: TextInputType.emailAddress, // Keyboard dengan tombol @
+                              keyboardType: TextInputType.emailAddress,
                               textInputAction: TextInputAction.next,
                               autofillHints: const [AutofillHints.email],
-                              autofocus: true,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                              ],
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Email tidak boleh kosong';
-                                }
-                                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                                  return 'Format email tidak valid';
-                                }
-                                return null;
-                              },
+                              validator: AppValidators.validateEmail,
                             ),
-                            TextFieldForm(
+
+                            AppTextField(
                               controller: _passwordController,
                               hintText: 'Password',
                               icon: HugeIcons.strokeRoundedLockPassword,
                               isPasswordField: true,
-                              keyboardType: TextInputType.visiblePassword, // Mematikan auto-correct password
+                              keyboardType: TextInputType.visiblePassword,
                               textInputAction: TextInputAction.done,
                               autofillHints: const [AutofillHints.password],
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                              ],
-                              onFieldSubmitted: (_) => _handleLogin(),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Password tidak boleh kosong';
-                                }
-                                if (value.length < 6) {
-                                  return 'Password minimal 6 karakter';
-                                }
-                                return null;
-                              },
+                              validator: AppValidators.validatePassword,
                             ),
+
                             const RememberRecovery(),
                           ],
                         ),
                       ),
                     ),
                     AppSpacing.v24,
-                    AppButton(
-                      title: 'Login Sekarang',
-                      onTap: _handleLogin,
-                    ),
+
+                    AppButton(title: 'Login Sekarang', onTap: _tapToLogin),
                     AppSpacing.v24,
+
                     const SocialDivider(title: 'atau lanjutkan dengan'),
                     AppSpacing.v24,
+
                     const SocialButton(),
                   ],
                 ),
               ),
             ),
+
             FooterForm(
               title: 'Belum punya akun? ',
               actionTitle: 'Daftar Sekarang',
-              onTap: () => context.pushReplacementNamed('register'),
+              onTap: () => _goToRegister(),
             ),
           ],
         ),

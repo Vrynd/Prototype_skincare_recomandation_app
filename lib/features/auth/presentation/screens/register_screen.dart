@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:skincare_recomendation/core/themes/app_spacing.dart';
@@ -7,11 +6,15 @@ import 'package:skincare_recomendation/core/themes/app_theme.dart';
 import 'package:skincare_recomendation/core/widgets/app_button.dart';
 import 'package:skincare_recomendation/core/widgets/app_navigation.dart';
 import 'package:skincare_recomendation/core/widgets/app_scafold.dart';
+import 'package:skincare_recomendation/core/widgets/app_text_field.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/footer_form.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/header_form.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/social_button.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/social_divider.dart';
-import 'package:skincare_recomendation/features/auth/presentation/widgets/text_field_form.dart';
+import 'package:skincare_recomendation/core/utils/app_validators.dart';
+import 'package:skincare_recomendation/features/auth/presentation/widgets/password_strength_indicator.dart';
+import 'package:skincare_recomendation/features/auth/provider/register_provider.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -26,8 +29,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  void _handleRegister() {
+  void _tapToRegister() async {
     if (_formKey.currentState!.validate()) {}
+  }
+
+  void _goToLogin() {
+    context.pushReplacementNamed('login');
   }
 
   @override
@@ -40,6 +47,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final indicator = context.read<PasswordIndicatorProvider>();
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: AppScafold(
@@ -62,93 +71,89 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     const HeaderForm(),
                     AppSpacing.v24,
+
                     Form(
                       key: _formKey,
                       child: AutofillGroup(
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           spacing: 24,
                           children: [
-                            TextFieldForm(
+                            AppTextField(
                               controller: _nameController,
                               hintText: 'Nama Lengkap',
                               icon: HugeIcons.strokeRoundedUser,
-                              keyboardType: TextInputType
-                                  .name, // Optimal untuk input nama
+                              keyboardType: TextInputType.name,
                               textInputAction: TextInputAction.next,
                               textCapitalization: TextCapitalization.words,
                               autofillHints: const [AutofillHints.name],
-                              autofocus: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Nama tidak boleh kosong';
-                                }
-                                return null;
-                              },
+                              validator: AppValidators.validateName,
                             ),
-                            TextFieldForm(
+
+                            AppTextField(
                               controller: _emailController,
                               hintText: 'Alamat Email',
                               icon: HugeIcons.strokeRoundedMail01,
-                              keyboardType: TextInputType
-                                  .emailAddress, // Optimal untuk email
+                              keyboardType: TextInputType.emailAddress,
                               textInputAction: TextInputAction.next,
                               autofillHints: const [AutofillHints.email],
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                              ],
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Email tidak boleh kosong';
-                                }
-                                if (!RegExp(
-                                  r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                                ).hasMatch(value)) {
-                                  return 'Format email tidak valid';
-                                }
-                                return null;
-                              },
+                              validator: AppValidators.validateEmail,
                             ),
-                            TextFieldForm(
-                              controller: _passwordController,
-                              hintText: 'Password',
-                              icon: HugeIcons.strokeRoundedLockPassword,
-                              isPasswordField: true,
-                              keyboardType: TextInputType
-                                  .visiblePassword, // Mematikan saran pada password
-                              textInputAction: TextInputAction.done,
-                              autofillHints: const [AutofillHints.newPassword],
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny(RegExp(r'\s')),
+
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AppTextField(
+                                  controller: _passwordController,
+                                  hintText: 'Password',
+                                  icon: HugeIcons.strokeRoundedLockPassword,
+                                  isPasswordField: true,
+                                  keyboardType: TextInputType.visiblePassword,
+                                  textInputAction: TextInputAction.done,
+                                  autofillHints: const [
+                                    AutofillHints.newPassword,
+                                  ],
+                                  validator: AppValidators.validatePassword,
+                                  onChanged: indicator.setPassword,
+                                ),
+
+                                Consumer<PasswordIndicatorProvider>(
+                                  builder: (context, provider, child) {
+                                    if (provider.password.isEmpty) {
+                                      return const SizedBox.shrink();
+                                    }
+                                    return Padding(
+                                      padding: const EdgeInsets.only(top: 24),
+                                      child: PasswordStrengthIndicator(
+                                        password: provider.password,
+                                      ),
+                                    );
+                                  },
+                                ),
                               ],
-                              onFieldSubmitted: (_) => _handleRegister(),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Password tidak boleh kosong';
-                                }
-                                if (value.length < 6) {
-                                  return 'Password minimal 6 karakter';
-                                }
-                                return null;
-                              },
                             ),
                           ],
                         ),
                       ),
                     ),
-                    AppSpacing.v32,
-                    AppButton(title: 'Daftar Sekarang', onTap: _handleRegister),
                     AppSpacing.v24,
+
+                    AppButton(title: 'Daftar Sekarang', onTap: _tapToRegister),
+                    AppSpacing.v24,
+
                     const SocialDivider(title: 'atau lanjutkan dengan'),
                     AppSpacing.v24,
+
                     const SocialButton(),
                   ],
                 ),
               ),
             ),
+
             FooterForm(
               title: 'Sudah punya akun? ',
               actionTitle: 'Masuk di sini',
-              onTap: () => context.pushReplacementNamed('login'),
+              onTap: () => _goToLogin(),
             ),
           ],
         ),
