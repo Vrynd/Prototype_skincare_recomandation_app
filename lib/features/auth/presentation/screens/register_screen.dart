@@ -9,31 +9,30 @@ import 'package:skincare_recomendation/core/widgets/app_navigation.dart';
 import 'package:skincare_recomendation/core/widgets/app_scafold.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/footer_form.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/header_form.dart';
-import 'package:skincare_recomendation/features/auth/presentation/widgets/remember_recovery.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/social_button.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/social_divider.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/text_field_form.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  void _handleLogin() {
-    if (_formKey.currentState!.validate()) {
-      
-    }
+  void _handleRegister() {
+    if (_formKey.currentState!.validate()) {}
   }
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -47,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
         statusBarIconBrightness: Brightness.light,
         header: AppNavigation(
           showBackButton: false,
-          title: 'Sign In',
+          title: 'Register',
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
           titleStyle: context.text.displayMedium?.copyWith(
             color: context.colors.surface,
@@ -70,13 +69,30 @@ class _LoginScreenState extends State<LoginScreen> {
                           spacing: 24,
                           children: [
                             TextFieldForm(
+                              controller: _nameController,
+                              hintText: 'Nama Lengkap',
+                              icon: HugeIcons.strokeRoundedUser,
+                              keyboardType: TextInputType
+                                  .name, // Optimal untuk input nama
+                              textInputAction: TextInputAction.next,
+                              textCapitalization: TextCapitalization.words,
+                              autofillHints: const [AutofillHints.name],
+                              autofocus: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Nama tidak boleh kosong';
+                                }
+                                return null;
+                              },
+                            ),
+                            TextFieldForm(
                               controller: _emailController,
-                              hintText: 'Email Address',
+                              hintText: 'Alamat Email',
                               icon: HugeIcons.strokeRoundedMail01,
-                              keyboardType: TextInputType.emailAddress, // Keyboard dengan tombol @
+                              keyboardType: TextInputType
+                                  .emailAddress, // Optimal untuk email
                               textInputAction: TextInputAction.next,
                               autofillHints: const [AutofillHints.email],
-                              autofocus: true,
                               inputFormatters: [
                                 FilteringTextInputFormatter.deny(RegExp(r'\s')),
                               ],
@@ -84,7 +100,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 if (value == null || value.isEmpty) {
                                   return 'Email tidak boleh kosong';
                                 }
-                                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                                if (!RegExp(
+                                  r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                                ).hasMatch(value)) {
                                   return 'Format email tidak valid';
                                 }
                                 return null;
@@ -95,13 +113,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               hintText: 'Password',
                               icon: HugeIcons.strokeRoundedLockPassword,
                               isPasswordField: true,
-                              keyboardType: TextInputType.visiblePassword, // Mematikan auto-correct password
+                              keyboardType: TextInputType
+                                  .visiblePassword, // Mematikan saran pada password
                               textInputAction: TextInputAction.done,
-                              autofillHints: const [AutofillHints.password],
+                              autofillHints: const [AutofillHints.newPassword],
                               inputFormatters: [
                                 FilteringTextInputFormatter.deny(RegExp(r'\s')),
                               ],
-                              onFieldSubmitted: (_) => _handleLogin(),
+                              onFieldSubmitted: (_) => _handleRegister(),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Password tidak boleh kosong';
@@ -112,16 +131,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 return null;
                               },
                             ),
-                            const RememberRecovery(),
                           ],
                         ),
                       ),
                     ),
-                    AppSpacing.v24,
-                    AppButton(
-                      title: 'Login Sekarang',
-                      onTap: _handleLogin,
-                    ),
+                    AppSpacing.v32,
+                    AppButton(title: 'Daftar Sekarang', onTap: _handleRegister),
                     AppSpacing.v24,
                     const SocialDivider(title: 'atau lanjutkan dengan'),
                     AppSpacing.v24,
@@ -131,9 +146,9 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             FooterForm(
-              title: 'Belum punya akun? ',
-              actionTitle: 'Daftar Sekarang',
-              onTap: () => context.pushReplacementNamed('register'),
+              title: 'Sudah punya akun? ',
+              actionTitle: 'Masuk di sini',
+              onTap: () => context.pushReplacementNamed('login'),
             ),
           ],
         ),
