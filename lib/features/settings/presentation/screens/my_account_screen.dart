@@ -13,6 +13,9 @@ import 'package:skincare_recomendation/features/settings/presentation/widgets/ac
 import 'package:skincare_recomendation/features/settings/presentation/widgets/group_title.dart';
 import 'package:skincare_recomendation/features/settings/presentation/widgets/confirm_sheet.dart';
 import 'package:skincare_recomendation/features/settings/presentation/widgets/profile_sheet.dart';
+import 'package:skincare_recomendation/features/settings/presentation/widgets/notification_sheet.dart';
+import 'package:skincare_recomendation/features/settings/presentation/widgets/languange_sheet.dart';
+import 'package:skincare_recomendation/features/settings/presentation/widgets/theme_sheet.dart';
 
 class MyAccountScreen extends StatefulWidget {
   const MyAccountScreen({super.key});
@@ -22,6 +25,10 @@ class MyAccountScreen extends StatefulWidget {
 }
 
 class _MyAccountScreenState extends State<MyAccountScreen> {
+  String _notificationStatus = 'Aktif';
+  String _language = 'Indonesia';
+  String _themeMode = 'Terang';
+  
   String get _greeting => AppHelpers.getGreeting();
 
   void _goToChangePassword() async {}
@@ -30,11 +37,41 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
 
   void _goToPrivacy() async {}
 
-  void _tapToNotification() async {}
+  void _tapToNotification() async {
+    NotificationSheet.show(
+      context: context,
+      currentValue: _notificationStatus,
+      onSelected: (value) {
+        setState(() {
+          _notificationStatus = value;
+        });
+      },
+    );
+  }
 
-  void _tapToLanguage() async {}
+  void _tapToLanguage() async {
+    LanguangeSheet.show(
+      context: context,
+      currentValue: _language,
+      onSelected: (value) {
+        setState(() {
+          _language = value;
+        });
+      },
+    );
+  }
 
-  void _tapToTheme() async {}
+  void _tapToTheme() async {
+    ThemeSheet.show(
+      context: context,
+      currentValue: _themeMode,
+      onSelected: (value) {
+        setState(() {
+          _themeMode = value;
+        });
+      },
+    );
+  }
 
   void _showProfileDetail() {
     ProfileSheet.show(
@@ -96,26 +133,34 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
             child: Column(
               children: [
                 AppTile.modern(
-                  icon: HugeIcons.strokeRoundedNotification03,
+                  icon: _notificationStatus == 'Aktif'
+                      ? HugeIcons.strokeRoundedNotification01
+                      : HugeIcons.strokeRoundedNotificationOff01,
                   iconColor: AppColors.accentAmber,
                   title: 'Notifikasi',
-                  value: 'Aktif',
+                  value: _notificationStatus,
                   onTap: () => _tapToNotification(),
                   showDivider: true,
                 ),
                 AppTile.modern(
-                  icon: HugeIcons.strokeRoundedTranslation,
+                  icon: _language == 'Indonesia'
+                      ? HugeIcons.strokeRoundedTranslation
+                      : HugeIcons.strokeRoundedGlobal,
                   iconColor: AppColors.accentBlue,
                   title: 'Bahasa',
-                  value: 'Indonesia',
+                  value: _language,
                   onTap: () => _tapToLanguage(),
                   showDivider: true,
                 ),
                 AppTile.modern(
-                  icon: HugeIcons.strokeRoundedMoon02,
+                  icon: _themeMode == 'Terang'
+                      ? HugeIcons.strokeRoundedSun03
+                      : _themeMode == 'Gelap'
+                      ? HugeIcons.strokeRoundedMoon02
+                      : HugeIcons.strokeRoundedSettings03,
                   iconColor: AppColors.accentPink,
                   title: 'Mode Tema',
-                  value: 'Terang',
+                  value: _themeMode,
                   onTap: () => _tapToTheme(),
                 ),
               ],

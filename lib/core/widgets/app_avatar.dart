@@ -128,7 +128,6 @@ class AppAvatar extends StatelessWidget {
       AppColors.accentCyan,
     ];
 
-    // Gunakan hash dari nama agar warna selalu konsisten untuk user yang sama
     final int index =
         name.toLowerCase().codeUnits.fold(0, (prev, curr) => prev + curr) %
         accentColors.length;
