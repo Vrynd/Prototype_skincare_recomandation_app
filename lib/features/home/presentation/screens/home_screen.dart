@@ -56,6 +56,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppScafold(
       statusBarIconBrightness: Brightness.light,
+      showHandle: true,
       header: Consumer<LocationProvider>(
         builder: (context, provider, _) {
           return AppLocation(
@@ -66,7 +67,7 @@ class HomeScreen extends StatelessWidget {
         },
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+        padding: const EdgeInsets.fromLTRB(20, 4, 20, 32),
         children: [
           SkinSummary(data: _summary),
           AppSpacing.v8,

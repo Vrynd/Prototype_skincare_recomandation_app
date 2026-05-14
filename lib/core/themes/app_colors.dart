@@ -23,4 +23,25 @@ class AppColors {
   static const Color lime = Color(0xFFF1FCE0);
   static const Color mint = Color(0xFFE0F2F1);
   static const Color yellow = Color(0xFFFEF9E7);
+
+  // New Refined Accent Colors (Sharpened)
+  static const Color accentPurple = Color(0xFF8B80F9);
+  static const Color accentOrange = Color(0xFFFF9E6D);
+  static const Color accentPink = Color(0xFFFF8FA3);
+  static const Color accentIndigo = Color(0xFF7384FF);
+  static const Color accentBlue = Color(0xFF6EC6FF);
+  static const Color accentTeal = Color(0xFF5CC5B8);
+  static const Color accentAmber = Color(0xFFFFCC4D);
+  static const Color accentRed = Color(0xFFFF7D7D);
+  static const Color accentLavender = Color(0xFFC19BFF);
+  static const Color accentSage = Color(0xFF9DD672);
+  static const Color accentCyan = Color(0xFF6EDCEB);
+
+  // High Contrast Luxury Colors
+  static const Color luxuryGold = Color(0xFFC5A059);
+  static const Color luxuryBlue = Color(0xFF1B3C73);
+  static const Color luxuryEmerald = Color(0xFF064635);
+  static const Color luxuryRuby = Color(0xFF8B0000);
+  static const Color luxuryAmethyst = Color(0xFF4B0082);
+  static const Color luxurySlate = Color(0xFF2D3250);
 }

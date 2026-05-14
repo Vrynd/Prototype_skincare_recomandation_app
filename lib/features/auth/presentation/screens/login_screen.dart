@@ -26,7 +26,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  void _tapToLogin() async {}
+  void _tapToLogin() async {
+    context.pushNamed('home');
+  }
 
   void _goToRegister() {
     context.pushReplacementNamed('register');

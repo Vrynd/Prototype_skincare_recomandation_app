@@ -15,6 +15,7 @@ class AppScafold extends StatelessWidget {
   final int headerFlex;
   final int bodyFlex;
   final Brightness statusBarIconBrightness;
+  final bool showHandle;
 
   const AppScafold({
     super.key,
@@ -29,6 +30,7 @@ class AppScafold extends StatelessWidget {
     this.headerFlex = 2,
     this.bodyFlex = 8,
     this.statusBarIconBrightness = Brightness.dark,
+    this.showHandle = false,
   });
 
   double _getRatio() =>
@@ -52,7 +54,7 @@ class AppScafold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _sytemUIOverlay();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _sytemUIOverlay());
 
     return Scaffold(
       backgroundColor: backgroundColor ?? context.colors.primary.withValues(alpha: 0.8),
@@ -112,17 +114,36 @@ class AppScafold extends StatelessWidget {
                 child: AppContainer(
                   color: bodyBackgroundColor ?? context.colors.lightBackground,
                   borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(28),
+                    top: Radius.circular(32),
                   ),
                   padding: EdgeInsets.zero,
                   showBorder: false,
                   showShadow: false,
-                  child: body,
+                  child: Column(
+                    children: [
+                      if (showHandle) _buildHandle(context),
+                      Expanded(child: body),
+                    ],
+                  ),
                 ),
               ),
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildHandle(BuildContext context) {
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.only(top: 12, bottom: 12),
+        width: 40,
+        height: 4,
+        decoration: BoxDecoration(
+          color: context.colors.outline.withValues(alpha: 0.15),
+          borderRadius: BorderRadius.circular(2),
+        ),
       ),
     );
   }

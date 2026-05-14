@@ -13,7 +13,7 @@ class NavigationScreen extends StatelessWidget {
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: SalomonBottomBar(
-        margin: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+        margin: const EdgeInsets.fromLTRB(20, 16, 20, 16),
         backgroundColor: context.colors.surfaceContainerLowest,
         currentIndex: navigationShell.currentIndex,
         onTap: (i) => navigationShell.goBranch(i),

@@ -34,7 +34,7 @@ class AppContainer extends StatelessWidget {
     this.opacity = 1.0,
     this.alignment,
     this.constraints,
-    this.clipBehavior = Clip.antiAlias,
+    this.clipBehavior = Clip.none,
     this.gradient,
     this.shape = BoxShape.rectangle,
     this.image,
