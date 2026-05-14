@@ -19,6 +19,8 @@ class AppContainer extends StatelessWidget {
   final Gradient? gradient;
   final BoxShape shape;
   final DecorationImage? image;
+  final List<BoxShadow>? customShadows;
+  final double? borderWidth;
 
   const AppContainer({
     super.key,
@@ -38,6 +40,8 @@ class AppContainer extends StatelessWidget {
     this.gradient,
     this.shape = BoxShape.rectangle,
     this.image,
+    this.customShadows,
+    this.borderWidth,
   });
 
   @override
@@ -60,8 +64,8 @@ class AppContainer extends StatelessWidget {
     return BoxDecoration(
       color: gradient == null
           ? (color == Colors.transparent
-                ? Colors.transparent
-                : backgroundColor.withValues(alpha: opacity))
+              ? Colors.transparent
+              : backgroundColor.withValues(alpha: opacity))
           : null,
       borderRadius: _radius,
       shape: shape,
@@ -81,12 +85,13 @@ class AppContainer extends StatelessWidget {
     if (!showBorder) return null;
     return Border.all(
       color: borderColor ?? context.colors.surfaceContainerLowest,
-      width: 1.3,
+      width: borderWidth ?? 1.3,
     );
   }
 
   List<BoxShadow>? _shadow(BuildContext context) {
     if (!showShadow) return null;
+    if (customShadows != null) return customShadows;
     return [
       BoxShadow(
         color: context.colors.shadow.withValues(alpha: 0.02),

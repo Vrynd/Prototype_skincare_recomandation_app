@@ -182,9 +182,9 @@ class AppTile extends StatelessWidget {
     if (value != null) {
       return Text(
         value!,
-        style: context.text.labelMedium?.copyWith(
-          color: valueColor ?? context.colors.primary,
-          fontWeight: FontWeight.w600,
+        style: context.text.bodyMedium?.copyWith(
+          color: valueColor ?? context.colors.outline,
+          fontWeight: FontWeight.w500,
         ),
       );
     }

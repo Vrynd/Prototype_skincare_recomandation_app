@@ -61,8 +61,8 @@ class HomeScreen extends StatelessWidget {
         builder: (context, provider, _) {
           return AppLocation(
             location: provider.address,
+            userName: 'Sarah Fatimatuz Zahra',
             greeting: '$_greeting, Sarah!',
-            avatarUrl: 'https://i.pravatar.cc/150?img=47',
           );
         },
       ),

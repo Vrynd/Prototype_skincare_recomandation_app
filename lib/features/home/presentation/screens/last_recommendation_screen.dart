@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:skincare_recomendation/core/themes/app_radius.dart';
 import 'package:skincare_recomendation/core/themes/app_spacing.dart';
-import 'package:skincare_recomendation/core/themes/app_theme.dart';
 import 'package:skincare_recomendation/core/widgets/app_container.dart';
 import 'package:skincare_recomendation/core/widgets/app_navigation.dart';
 import 'package:skincare_recomendation/core/widgets/app_scafold.dart';
@@ -18,11 +17,7 @@ class LastRecommendationScreen extends StatelessWidget {
       statusBarIconBrightness: Brightness.light,
       header: AppNavigation(
         title: title,
-        actionIcon: HugeIcon(
-          icon: HugeIcons.strokeRoundedDelete02,
-          size: 24,
-          color: context.colors.surface,
-        ),
+        actionIcon: HugeIcon(icon: HugeIcons.strokeRoundedDelete02),
         onActionTap: () {},
       ),
       body: ListView(

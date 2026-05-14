@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:skincare_recomendation/core/themes/app_theme.dart';
+import 'package:skincare_recomendation/core/widgets/app_avatar.dart';
 
 class AppLocation extends StatelessWidget {
   final String greeting;
   final String location;
-  final String avatarUrl;
+  final String userName;
+  final String? avatarUrl;
 
   const AppLocation({
     super.key,
     required this.greeting,
     required this.location,
-    required this.avatarUrl,
+    required this.userName,
+    this.avatarUrl,
   });
 
   @override
@@ -57,20 +60,11 @@ class AppLocation extends StatelessWidget {
   }
 
   Widget _avatar(BuildContext context) {
-    return Container(
-      width: 48,
-      height: 48,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: context.colors.surface,
-        border: Border.all(
-          color: context.colors.surface.withValues(alpha: 0.8),
-        ),
-        image: DecorationImage(
-          image: NetworkImage(avatarUrl),
-          fit: BoxFit.cover,
-        ),
-      ),
+    return AppAvatar(
+      imageUrl: avatarUrl,
+      name: userName,
+      size: 48,
+      borderWidth: 1.1,
     );
   }
 }

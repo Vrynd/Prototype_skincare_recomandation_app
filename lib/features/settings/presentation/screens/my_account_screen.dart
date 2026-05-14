@@ -11,11 +11,54 @@ import 'package:skincare_recomendation/core/widgets/app_container.dart';
 import 'package:skincare_recomendation/core/widgets/app_tile.dart';
 import 'package:skincare_recomendation/features/settings/presentation/widgets/account_profile.dart';
 import 'package:skincare_recomendation/features/settings/presentation/widgets/group_title.dart';
+import 'package:skincare_recomendation/features/settings/presentation/widgets/confirm_sheet.dart';
+import 'package:skincare_recomendation/features/settings/presentation/widgets/profile_sheet.dart';
 
-class MyAccountScreen extends StatelessWidget {
+class MyAccountScreen extends StatefulWidget {
   const MyAccountScreen({super.key});
 
+  @override
+  State<MyAccountScreen> createState() => _MyAccountScreenState();
+}
+
+class _MyAccountScreenState extends State<MyAccountScreen> {
   String get _greeting => AppHelpers.getGreeting();
+
+  void _goToChangePassword() async {}
+
+  void _goToAuthentication() async {}
+
+  void _goToPrivacy() async {}
+
+  void _tapToNotification() async {}
+
+  void _tapToLanguage() async {}
+
+  void _tapToTheme() async {}
+
+  void _showProfileDetail() {
+    ProfileSheet.show(
+      context: context,
+      name: 'Sarah Fatimatuz Zahra',
+      email: 'sarahftz@gmail.com',
+      avatarUrl: null,
+      accountStatus: 'Aktif',
+      joinedDate: '12 Mei 2024',
+    );
+  }
+
+  void _tapToLogout() async {
+    ConfirmSheet.show(
+      context: context,
+      title: 'Keluar Akun',
+      description:
+          'Apakah Anda yakin ingin keluar dari akun Alexandria? Anda perlu masuk kembali nanti.',
+      confirmText: 'Ya, Keluar',
+      isDanger: true,
+      icon: HugeIcons.strokeRoundedLogout01,
+      onConfirm: () {},
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +69,9 @@ class MyAccountScreen extends StatelessWidget {
         builder: (context, provider, _) {
           return AppLocation(
             location: provider.address,
-            greeting: '$_greeting, Alexandria!',
-            avatarUrl: 'https://i.pravatar.cc/150?img=47',
+            userName: 'Sarah Fatimatuz Zahra',
+            greeting: '$_greeting, Sarah!',
+            avatarUrl: null,
           );
         },
       ),
@@ -35,16 +79,16 @@ class MyAccountScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 4, 20, 32),
         children: [
           AccountProfile(
-            name: 'Alexandria',
-            email: 'alexandria@gmail.com',
-            avatarUrl: 'https://i.pravatar.cc/150?img=47',
+            name: 'Sarah Fatimatuz Zahra',
+            email: 'sarahftz@gmail.com',
+            avatarUrl: null,
             isOnline: true,
-            onTap: () {},
             accountStatus: 'Aktif',
+            onTap: () => _showProfileDetail(),
           ),
           AppSpacing.v20,
 
-          GroupTitle(title: 'Personalisasi'),
+          const GroupTitle(title: 'Personalisasi'),
           AppContainer(
             padding: EdgeInsets.zero,
             showShadow: false,
@@ -56,7 +100,7 @@ class MyAccountScreen extends StatelessWidget {
                   iconColor: AppColors.accentAmber,
                   title: 'Notifikasi',
                   value: 'Aktif',
-                  onTap: () {},
+                  onTap: () => _tapToNotification(),
                   showDivider: true,
                 ),
                 AppTile.modern(
@@ -64,7 +108,7 @@ class MyAccountScreen extends StatelessWidget {
                   iconColor: AppColors.accentBlue,
                   title: 'Bahasa',
                   value: 'Indonesia',
-                  onTap: () {},
+                  onTap: () => _tapToLanguage(),
                   showDivider: true,
                 ),
                 AppTile.modern(
@@ -72,7 +116,7 @@ class MyAccountScreen extends StatelessWidget {
                   iconColor: AppColors.accentPink,
                   title: 'Mode Tema',
                   value: 'Terang',
-                  onTap: () {},
+                  onTap: () => _tapToTheme(),
                 ),
               ],
             ),
@@ -90,21 +134,21 @@ class MyAccountScreen extends StatelessWidget {
                   icon: HugeIcons.strokeRoundedKey01,
                   iconColor: AppColors.accentTeal,
                   title: 'Ganti Kata Sandi',
-                  onTap: () {},
+                  onTap: () => _goToChangePassword(),
                   showDivider: true,
                 ),
                 AppTile.modern(
                   icon: HugeIcons.strokeRoundedUserIdVerification,
                   iconColor: AppColors.accentLavender,
                   title: 'Autentikasi Akun',
-                  onTap: () {},
+                  onTap: () => _goToAuthentication(),
                   showDivider: true,
                 ),
                 AppTile.modern(
                   icon: HugeIcons.strokeRoundedSecurityCheck,
                   iconColor: AppColors.accentIndigo,
                   title: 'Privasi & Keamanan',
-                  onTap: () {},
+                  onTap: () => _goToPrivacy(),
                 ),
               ],
             ),
@@ -119,7 +163,7 @@ class MyAccountScreen extends StatelessWidget {
               icon: HugeIcons.strokeRoundedLogout01,
               title: 'Keluar',
               isDanger: true,
-              onTap: () {},
+              onTap: () => _tapToLogout(),
             ),
           ),
         ],

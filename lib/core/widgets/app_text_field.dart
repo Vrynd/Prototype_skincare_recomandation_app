@@ -16,10 +16,12 @@ class AppTextField extends StatefulWidget {
   final ValueChanged<String>? onFieldSubmitted;
   final List<TextInputFormatter>? inputFormatters;
   final bool enabled;
+  final bool readOnly;
   final bool autofocus;
   final Iterable<String>? autofillHints;
   final TextCapitalization textCapitalization;
   final ValueChanged<String>? onChanged;
+  final Widget? suffix;
 
   const AppTextField({
     super.key,
@@ -33,10 +35,12 @@ class AppTextField extends StatefulWidget {
     this.onFieldSubmitted,
     this.inputFormatters,
     this.enabled = true,
+    this.readOnly = false,
     this.autofocus = false,
     this.autofillHints,
     this.textCapitalization = TextCapitalization.none,
     this.onChanged,
+    this.suffix,
   });
 
   @override
@@ -64,6 +68,7 @@ class _AppTextFieldState extends State<AppTextField> {
       onChanged: widget.onChanged,
       inputFormatters: widget.inputFormatters,
       enabled: widget.enabled,
+      readOnly: widget.readOnly,
       autofocus: widget.autofocus,
       autofillHints: widget.autofillHints,
       textCapitalization: widget.textCapitalization,
@@ -73,9 +78,18 @@ class _AppTextFieldState extends State<AppTextField> {
   }
 
   TextStyle _getTextStyle(BuildContext context) {
+    Color textColor;
+    if (!widget.enabled) {
+      textColor = context.colors.outline;
+    } else if (widget.readOnly) {
+      textColor = context.colors.outline;
+    } else {
+      textColor = context.colors.onSurface;
+    }
+
     return context.text.titleLarge!.copyWith(
       fontWeight: FontWeight.w500,
-      color: widget.enabled ? context.colors.onSurface : context.colors.outline,
+      color: textColor,
     );
   }
 
@@ -88,7 +102,7 @@ class _AppTextFieldState extends State<AppTextField> {
         color: context.colors.outline.withValues(alpha: 0.7),
       ),
       prefixIcon: _buildPrefixIcon(context),
-      suffixIcon: _buildSuffixIcon(context),
+      suffixIcon: widget.suffix ?? _buildSuffixIcon(context),
       filled: true,
       fillColor: context.colors.onSurfaceVariant.withValues(alpha: 0.06),
       contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
@@ -109,14 +123,18 @@ class _AppTextFieldState extends State<AppTextField> {
   }
 
   Widget? _buildPrefixIcon(BuildContext context) {
-    final color = widget.enabled
-        ? context.colors.onSurface
-        : context.colors.outline;
+    final Color iconColor;
+    if (!widget.enabled || widget.readOnly) {
+      iconColor = context.colors.outline;
+    } else {
+      iconColor = context.colors.onSurface;
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: widget.icon is List<List<dynamic>>
-          ? HugeIcon(icon: widget.icon, color: color, size: 22)
-          : Icon(widget.icon, color: color, size: 22),
+          ? HugeIcon(icon: widget.icon, color: iconColor, size: 22)
+          : Icon(widget.icon, color: iconColor, size: 22),
     );
   }
 

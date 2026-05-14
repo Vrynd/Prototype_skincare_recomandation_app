@@ -4,11 +4,12 @@ import 'package:skincare_recomendation/core/themes/app_radius.dart';
 import 'package:skincare_recomendation/core/themes/app_theme.dart';
 import 'package:skincare_recomendation/core/widgets/app_container.dart';
 import 'package:skincare_recomendation/core/widgets/app_divider.dart';
+import 'package:skincare_recomendation/core/widgets/app_avatar.dart';
 
 class AccountProfile extends StatelessWidget {
   final String name;
   final String email;
-  final String avatarUrl;
+  final String? avatarUrl;
   final String accountStatus;
   final bool isOnline;
   final VoidCallback? onTap;
@@ -17,7 +18,7 @@ class AccountProfile extends StatelessWidget {
     super.key,
     required this.name,
     required this.email,
-    required this.avatarUrl,
+    this.avatarUrl,
     required this.accountStatus,
     this.isOnline = false,
     this.onTap,
@@ -37,104 +38,121 @@ class AccountProfile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
-              child: Row(
-                spacing: 16,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Stack(
-                    children: [
-                      CircleAvatar(
-                        radius: 28,
-                        backgroundImage: Image.network(avatarUrl).image,
-                      ),
-                      if (isOnline)
-                        Positioned(
-                          right: 0,
-                          bottom: 0,
-                          child: Container(
-                            width: 14,
-                            height: 14,
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: context.colors.surfaceContainerLowest,
-                                width: 2.5,
-                              ),
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      spacing: 4,
-                      children: [
-                        Text(
-                          name,
-                          style: context.text.titleLarge?.copyWith(
-                            color: context.colors.onSurface,
-                          ),
-                        ),
-                        Text(
-                          email,
-                          style: context.text.bodyLarge?.copyWith(
-                            color: context.colors.onSurfaceVariant
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  HugeIcon(
-                    icon: HugeIcons.strokeRoundedArrowUpRight01,
-                    color: context.colors.onSurfaceVariant.withValues(alpha: 0.6),
-                    size: 20,
-                  ),
-                ],
-              ),
+            _ProfileInfo(
+              name: name,
+              email: email,
+              avatarUrl: avatarUrl,
+              isOnline: isOnline,
+              onTap: onTap,
             ),
             const AppDivider.dashed(indent: 0),
-
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Status Akun',
-                    style: context.text.bodyMedium?.copyWith(
-                      color: context.colors.onSurfaceVariant.withValues(
-                        alpha: 0.8,
-                      ),
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: context.colors.secondaryContainer.withValues(alpha: 0.6),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      accountStatus.toUpperCase(),
-                      style: context.text.labelSmall?.copyWith(
-                        color: context.colors.primary,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            _StatusSection(accountStatus: accountStatus),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ProfileInfo extends StatelessWidget {
+  final String name;
+  final String email;
+  final String? avatarUrl;
+  final bool isOnline;
+  final VoidCallback? onTap;
+
+  const _ProfileInfo({
+    required this.name,
+    required this.email,
+    this.avatarUrl,
+    required this.isOnline,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+      child: Row(
+        spacing: 16,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          AppAvatar(
+            imageUrl: avatarUrl,
+            name: name,
+            isOnline: isOnline,
+            borderColor: context.colors.tertiary.withValues(alpha: .2),
+            size: 56,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 4,
+              children: [
+                Text(
+                  name,
+                  style: context.text.titleLarge?.copyWith(
+                    color: context.colors.onSurface,
+                  ),
+                ),
+                Text(
+                  email,
+                  style: context.text.bodyLarge?.copyWith(
+                    color: context.colors.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (onTap != null)
+            HugeIcon(
+              icon: HugeIcons.strokeRoundedArrowUpRight01,
+              color: context.colors.onSurfaceVariant.withValues(alpha: 0.6),
+              size: 20,
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+
+
+class _StatusSection extends StatelessWidget {
+  final String accountStatus;
+
+  const _StatusSection({required this.accountStatus});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Status Akun',
+            style: context.text.bodyMedium?.copyWith(
+              color: context.colors.onSurfaceVariant.withValues(alpha: 0.8),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: context.colors.secondaryContainer.withValues(alpha: 0.6),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              accountStatus.toUpperCase(),
+              style: context.text.labelSmall?.copyWith(
+                color: context.colors.primary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

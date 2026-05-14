@@ -1,0 +1,194 @@
+import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
+import 'package:skincare_recomendation/core/themes/app_spacing.dart';
+import 'package:skincare_recomendation/core/themes/app_theme.dart';
+import 'package:skincare_recomendation/core/utils/app_validators.dart';
+import 'package:skincare_recomendation/core/widgets/app_avatar.dart';
+import 'package:skincare_recomendation/core/widgets/app_bottom_sheet.dart';
+import 'package:skincare_recomendation/core/widgets/app_button.dart';
+import 'package:skincare_recomendation/core/widgets/app_container.dart';
+import 'package:skincare_recomendation/core/widgets/app_text_field.dart';
+import 'package:skincare_recomendation/core/widgets/app_tile.dart';
+import 'package:skincare_recomendation/features/settings/presentation/widgets/group_title.dart';
+
+class ProfileSheet extends StatefulWidget {
+  final String name;
+  final String email;
+  final String? avatarUrl;
+  final String accountStatus;
+  final String joinedDate;
+
+  const ProfileSheet({
+    super.key,
+    required this.name,
+    required this.email,
+    this.avatarUrl,
+    required this.accountStatus,
+    required this.joinedDate,
+  });
+
+  static Future<void> show({
+    required BuildContext context,
+    required String name,
+    required String email,
+    String? avatarUrl,
+    required String accountStatus,
+    required String joinedDate,
+  }) {
+    return AppBottomSheet.show(
+      context: context,
+      backgroundColor: context.colors.surfaceContainerLowest,
+      child: ProfileSheet(
+        name: name,
+        email: email,
+        avatarUrl: avatarUrl,
+        accountStatus: accountStatus,
+        joinedDate: joinedDate,
+      ),
+    );
+  }
+
+  @override
+  State<ProfileSheet> createState() => _ProfileSheetState();
+}
+
+class _ProfileSheetState extends State<ProfileSheet> {
+  late TextEditingController _nameController;
+  bool _isEditingName = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: widget.name);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _buildHeader(),
+        AppSpacing.v32,
+
+        const GroupTitle(
+          title: 'Informasi Pribadi',
+          padding: EdgeInsets.only(bottom: 8),
+        ),
+        AppTextField(
+          controller: _nameController,
+          hintText: 'Nama Lengkap',
+          icon: HugeIcons.strokeRoundedUser,
+          keyboardType: TextInputType.name,
+          textInputAction: TextInputAction.done,
+          textCapitalization: TextCapitalization.words,
+          autofillHints: const [AutofillHints.name],
+          validator: AppValidators.validateName,
+          readOnly: !_isEditingName,
+          suffix: TextButton(
+            onPressed: () {
+              setState(() {
+                _isEditingName = !_isEditingName;
+              });
+            },
+            child: Text(
+              _isEditingName ? 'Selesai' : 'Edit',
+              style: context.text.labelMedium?.copyWith(
+                color: context.colors.tertiary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+        AppSpacing.v20,
+
+        const GroupTitle(
+          title: 'Detail Akun',
+          padding: EdgeInsets.only(bottom: 8),
+        ),
+        AppContainer(
+          padding: EdgeInsets.zero,
+          showShadow: false,
+          color: context.colors.onSurfaceVariant,
+          opacity: 0.06,
+          borderColor: context.colors.outline.withValues(alpha: .2),
+          child: Column(
+            children: [
+              AppTile.modern(
+                icon: HugeIcons.strokeRoundedMail01,
+                title: 'Email',
+                value: widget.email,
+                valueColor: context.colors.outline,
+                showDivider: true,
+              ),
+              AppTile.modern(
+                icon: HugeIcons.strokeRoundedSecurityCheck,
+                title: 'Status Akun',
+                value: widget.accountStatus,
+                valueColor: context.colors.outline,
+                showDivider: true,
+              ),
+              AppTile.modern(
+                icon: HugeIcons.strokeRoundedCalendar03,
+                title: 'Bergabung Sejak',
+                value: widget.joinedDate,
+                valueColor: context.colors.outline,
+              ),
+            ],
+          ),
+        ),
+        AppSpacing.v32,
+
+        AppButton(
+          title: 'Simpan Perubahan',
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeader() {
+    return Center(
+      child: Stack(
+        children: [
+          AppAvatar(
+            imageUrl: widget.avatarUrl,
+            name: widget.name,
+            size: 110,
+            borderWidth: 2,
+            borderColor: context.colors.tertiary.withValues(alpha: .2),
+          ),
+          Positioned(
+            right: 0,
+            bottom: 0,
+            child: GestureDetector(
+              onTap: () {},
+              child: AppContainer(
+                width: null,
+                padding: const EdgeInsets.all(8),
+                color: context.colors.secondary,
+                shape: BoxShape.circle,
+                borderColor: context.colors.outlineVariant,
+                borderWidth: 2,
+                showShadow: false,
+                child: HugeIcon(
+                  icon: HugeIcons.strokeRoundedCamera01,
+                  size: 16,
+                  color: context.colors.outlineVariant,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

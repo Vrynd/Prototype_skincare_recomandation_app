@@ -8,7 +8,7 @@ class AppNavigation extends StatelessWidget {
   final bool isScrolled;
   final String title;
   final String? subtitle;
-  final Widget? actionIcon;
+  final dynamic actionIcon;
   final VoidCallback? onActionTap;
   final Widget? leading;
   final Widget? trailing;
@@ -54,7 +54,7 @@ class AppNavigation extends StatelessWidget {
                   color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
-                )
+                ),
               ]
             : null,
       ),
@@ -62,21 +62,16 @@ class AppNavigation extends StatelessWidget {
         bottom: false,
         child: Container(
           height: height,
-          padding: padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding:
+              padding ??
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
+            spacing: 12,
             children: [
-              if (resolvedLeading != null) ...[
-                resolvedLeading,
-                const SizedBox(width: 12),
-              ],
-              Expanded(
-                child: _buildTitle(context),
-              ),
-              if (resolvedTrailing != null) ...[
-                const SizedBox(width: 12),
-                resolvedTrailing,
-              ],
+              if (resolvedLeading != null) resolvedLeading,
+              Expanded(child: _buildTitle(context)),
+              if (resolvedTrailing != null) resolvedTrailing,
             ],
           ),
         ),
@@ -105,21 +100,30 @@ class AppNavigation extends StatelessWidget {
 
   Widget? _buildTrailing(BuildContext context) {
     if (trailing != null) return trailing;
+    if (actionIcon == null || onActionTap == null) return null;
 
-    if (actionIcon != null && onActionTap != null) {
-      return _buildCircularButton(
-        context: context,
-        onTap: onActionTap!,
-        icon: actionIcon!,
-      );
-    }
+    return _buildCircularButton(
+      context: context,
+      onTap: onActionTap!,
+      icon: _buildIconWidget(context, actionIcon!),
+    );
+  }
 
-    return null;
+  Widget _buildIconWidget(BuildContext context, dynamic icon) {
+    final color = iconColor ?? context.colors.surface;
+
+    return switch (icon) {
+      Widget w => w,
+      IconData d => Icon(d, color: color, size: 24),
+      _ => HugeIcon(icon: icon, color: color, size: 24),
+    };
   }
 
   Widget _buildTitle(BuildContext context) {
     return Column(
-      crossAxisAlignment: centerTitle ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      crossAxisAlignment: centerTitle
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
@@ -127,7 +131,8 @@ class AppNavigation extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           textAlign: centerTitle ? TextAlign.center : TextAlign.start,
-          style: titleStyle ??
+          style:
+              titleStyle ??
               context.text.headlineSmall?.copyWith(
                 color: context.colors.surface,
                 fontWeight: FontWeight.bold,
@@ -140,7 +145,8 @@ class AppNavigation extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             textAlign: centerTitle ? TextAlign.center : TextAlign.start,
-            style: subtitleStyle ??
+            style:
+                subtitleStyle ??
                 context.text.bodySmall?.copyWith(
                   color: context.colors.surface.withValues(alpha: 0.7),
                 ),
