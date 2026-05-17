@@ -61,7 +61,7 @@ class RememberRecovery extends StatelessWidget {
             // Action lupa password
           },
           child: Text(
-            'Lupa Password?',
+            'Lupa Kata Sandi?',
             style: context.text.bodyMedium?.copyWith(
               color: context.colors.primary,
               fontWeight: FontWeight.w600,

@@ -7,8 +7,8 @@ import 'package:skincare_recomendation/core/widgets/app_button.dart';
 import 'package:skincare_recomendation/core/widgets/app_navigation.dart';
 import 'package:skincare_recomendation/core/widgets/app_scafold.dart';
 import 'package:skincare_recomendation/core/widgets/app_text_field.dart';
-import 'package:skincare_recomendation/features/auth/presentation/widgets/footer_form.dart';
-import 'package:skincare_recomendation/features/auth/presentation/widgets/header_form.dart';
+import 'package:skincare_recomendation/core/widgets/app_title_footer.dart';
+import 'package:skincare_recomendation/core/widgets/app_title_header.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/social_button.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/social_divider.dart';
 import 'package:skincare_recomendation/core/utils/app_validators.dart';
@@ -56,84 +56,85 @@ class _RegisterScreenState extends State<RegisterScreen> {
         header: AppNavigation(
           showBackButton: false,
           title: 'Register',
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
           titleStyle: context.text.displayMedium?.copyWith(
             color: context.colors.surface,
           ),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(16, 32, 16, 32),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const HeaderForm(),
+        body: Form(
+          key: _formKey,
+          child: CustomScrollView(
+            slivers: [
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(20, 32, 20, 0),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate([
+                    const AppTitleHeader(
+                      title: 'Selamat Datang Kembali!',
+                      description:
+                          'Untuk tetap terhubung dengan kami, silakan masuk\ndengan informasi Anda',
+                    ),
                     AppSpacing.v24,
 
-                    Form(
-                      key: _formKey,
-                      child: AutofillGroup(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: 24,
-                          children: [
-                            AppTextField(
-                              controller: _nameController,
-                              hintText: 'Nama Lengkap',
-                              icon: HugeIcons.strokeRoundedUser,
-                              keyboardType: TextInputType.name,
-                              textInputAction: TextInputAction.next,
-                              textCapitalization: TextCapitalization.words,
-                              autofillHints: const [AutofillHints.name],
-                              validator: AppValidators.validateName,
-                            ),
+                    AutofillGroup(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 24,
+                        children: [
+                          AppTextField(
+                            controller: _nameController,
+                            hintText: 'Nama Lengkap',
+                            icon: HugeIcons.strokeRoundedUser,
+                            keyboardType: TextInputType.name,
+                            textInputAction: TextInputAction.next,
+                            textCapitalization: TextCapitalization.words,
+                            autofillHints: const [AutofillHints.name],
+                            validator: AppValidators.validateName,
+                          ),
 
-                            AppTextField(
-                              controller: _emailController,
-                              hintText: 'Alamat Email',
-                              icon: HugeIcons.strokeRoundedMail01,
-                              keyboardType: TextInputType.emailAddress,
-                              textInputAction: TextInputAction.next,
-                              autofillHints: const [AutofillHints.email],
-                              validator: AppValidators.validateEmail,
-                            ),
+                          AppTextField(
+                            controller: _emailController,
+                            hintText: 'Alamat Email',
+                            icon: HugeIcons.strokeRoundedMail01,
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
+                            autofillHints: const [AutofillHints.email],
+                            validator: AppValidators.validateEmail,
+                          ),
 
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                AppTextField(
-                                  controller: _passwordController,
-                                  hintText: 'Password',
-                                  icon: HugeIcons.strokeRoundedLockPassword,
-                                  isPasswordField: true,
-                                  keyboardType: TextInputType.visiblePassword,
-                                  textInputAction: TextInputAction.done,
-                                  autofillHints: const [
-                                    AutofillHints.newPassword,
-                                  ],
-                                  validator: AppValidators.validatePassword,
-                                  onChanged: indicator.setPassword,
-                                ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppTextField(
+                                controller: _passwordController,
+                                hintText: 'Kata Sandi',
+                                icon: HugeIcons.strokeRoundedLockPassword,
+                                isPasswordField: true,
+                                keyboardType: TextInputType.visiblePassword,
+                                textInputAction: TextInputAction.done,
+                                autofillHints: const [
+                                  AutofillHints.newPassword,
+                                ],
+                                validator: AppValidators.validatePassword,
+                                onChanged: indicator.setPassword,
+                              ),
 
-                                Consumer<PasswordIndicatorProvider>(
-                                  builder: (context, provider, child) {
-                                    if (provider.password.isEmpty) {
-                                      return const SizedBox.shrink();
-                                    }
-                                    return Padding(
-                                      padding: const EdgeInsets.only(top: 24),
-                                      child: PasswordStrengthIndicator(
-                                        password: provider.password,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              Consumer<PasswordIndicatorProvider>(
+                                builder: (context, provider, child) {
+                                  if (provider.password.isEmpty) {
+                                    return const SizedBox.shrink();
+                                  }
+                                  return Padding(
+                                    padding: const EdgeInsets.only(top: 24),
+                                    child: PasswordStrengthIndicator(
+                                      password: provider.password,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                     AppSpacing.v24,
@@ -145,17 +146,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     AppSpacing.v24,
 
                     const SocialButton(),
+                  ]),
+                ),
+              ),
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const Spacer(),
+                    AppTitleFooter(
+                      title: 'Sudah punya akun? ',
+                      actionTitle: 'Masuk di sini',
+                      onTap: () => _goToLogin(),
+                    ),
                   ],
                 ),
               ),
-            ),
-
-            FooterForm(
-              title: 'Sudah punya akun? ',
-              actionTitle: 'Masuk di sini',
-              onTap: () => _goToLogin(),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

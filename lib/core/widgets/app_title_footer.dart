@@ -1,22 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:skincare_recomendation/core/themes/app_theme.dart';
+import 'package:skincare_recomendation/core/widgets/app_button.dart';
 
-class FooterForm extends StatelessWidget {
+enum FooterStyle { text, button }
+
+class AppTitleFooter extends StatelessWidget {
+  final FooterStyle style;
   final String title;
   final String actionTitle;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
+  final bool isLoading;
 
-  const FooterForm({
+  // Text variant (default constructor)
+  const AppTitleFooter({
     super.key,
     required this.title,
     required this.actionTitle,
     required this.onTap,
-  });
+  }) : style = FooterStyle.text,
+       isLoading = false;
+
+  // Button variant (named constructor)
+  const AppTitleFooter.button({
+    super.key,
+    required this.title,
+    this.onTap,
+    this.isLoading = false,
+  }) : style = FooterStyle.button,
+       actionTitle = '';
 
   @override
   Widget build(BuildContext context) {
+    if (style == FooterStyle.button) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 60),
+        child: AppButton(
+          title: title,
+          onTap: onTap,
+          isLoading: isLoading,
+          variant: ButtonVariant.primary,
+        ),
+      );
+    }
+
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 60),
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 60),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

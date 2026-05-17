@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:skincare_recomendation/core/utils/app_helpers.dart';
 import 'package:skincare_recomendation/core/widgets/app_location.dart';
@@ -31,7 +32,9 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
   
   String get _greeting => AppHelpers.getGreeting();
 
-  void _goToChangePassword() async {}
+  void _goToChangePassword() {
+    context.pushNamed('change-password');
+  }
 
   void _goToAuthentication() async {}
 

@@ -8,7 +8,6 @@ enum ActionStyle { button, text, none }
 
 class AppTitleAction extends StatelessWidget {
   final ActionStyle style;
-
   final String title;
   final String? subtitle;
   final String actionText;

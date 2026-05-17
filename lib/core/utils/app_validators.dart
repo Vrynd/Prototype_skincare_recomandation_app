@@ -36,4 +36,21 @@ class AppValidators {
     }
     return null;
   }
+
+  static String? validateRequired(String? value, String fieldName) {
+    if (value == null || value.isEmpty) {
+      return '$fieldName tidak boleh kosong';
+    }
+    return null;
+  }
+
+  static String? validateConfirmPassword(String? value, String password) {
+    if (value == null || value.isEmpty) {
+      return 'Konfirmasi kata sandi tidak boleh kosong';
+    }
+    if (value != password) {
+      return 'Konfirmasi kata sandi tidak cocok';
+    }
+    return null;
+  }
 }
