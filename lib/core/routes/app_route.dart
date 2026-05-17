@@ -7,6 +7,7 @@ import 'package:skincare_recomendation/features/home/presentation/screens/last_r
 import 'package:skincare_recomendation/features/navigations/presentation/screens/navigation_screen.dart';
 import 'package:skincare_recomendation/features/settings/presentation/screens/my_account_screen.dart';
 import 'package:skincare_recomendation/features/settings/presentation/screens/change_password_screen.dart';
+import 'package:skincare_recomendation/features/recommendation/presentation/screens/skincare_match_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(
   debugLabel: 'root',
@@ -73,6 +74,11 @@ class AppRoute {
         path: '/change-password',
         name: 'change-password',
         builder: (context, state) => const ChangePasswordScreen(),
+      ),
+      GoRoute(
+        path: '/skincare-match',
+        name: 'skincare-match',
+        builder: (context, state) => const SkincareMatchScreen(),
       ),
       GoRoute(
         path: '/login',

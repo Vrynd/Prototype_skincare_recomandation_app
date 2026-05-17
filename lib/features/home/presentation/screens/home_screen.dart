@@ -41,7 +41,7 @@ class HomeScreen extends StatelessWidget {
         // context.pushNamed('skin-condition');
         break;
       case 'Skincare Match':
-        // context.pushNamed('skincare-match');
+        context.pushNamed('skincare-match');
         break;
       default:
         debugPrint('Aksi cepat "${action.title}" diklik');

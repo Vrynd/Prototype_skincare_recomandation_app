@@ -7,17 +7,20 @@ class AppTitleHeader extends StatelessWidget {
   final HeaderStyle style;
   final String title;
   final String description;
+  final double spacing;
 
   const AppTitleHeader({
     super.key,
     required this.title,
     required this.description,
+    this.spacing = 16.0,
   }) : style = HeaderStyle.normal;
 
   const AppTitleHeader.form({
     super.key,
     required this.title,
     required this.description,
+    this.spacing = 16.0,
   }) : style = HeaderStyle.form;
 
   @override
@@ -40,7 +43,7 @@ class AppTitleHeader extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 16,
+      spacing: spacing,
       children: [
         Text(
           title,
