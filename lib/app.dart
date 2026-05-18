@@ -28,7 +28,10 @@ class MyApp extends StatelessWidget {
         Provider<StorageService>.value(value: storageService),
         Provider<LocationService>(create: (_) => LocationService()),
         ChangeNotifierProvider(
-          create: (context) => AuthProvider(context.read<AuthService>()),
+          create: (context) => AuthProvider(
+            context.read<AuthService>(),
+            context.read<StorageService>(),
+          ),
         ),
         ChangeNotifierProvider(
           create: (context) => LocationProvider(

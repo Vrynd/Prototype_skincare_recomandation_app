@@ -14,7 +14,9 @@ import 'package:skincare_recomendation/features/auth/presentation/widgets/social
 import 'package:skincare_recomendation/features/auth/presentation/widgets/social_divider.dart';
 import 'package:skincare_recomendation/core/utils/app_validators.dart';
 import 'package:provider/provider.dart';
+import 'package:skincare_recomendation/core/services/storage_service.dart';
 import 'package:skincare_recomendation/features/auth/provider/auth_provider.dart';
+import 'package:skincare_recomendation/features/auth/provider/remember_me_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -28,6 +30,28 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadSavedEmail();
+    });
+  }
+
+  void _loadSavedEmail() {
+    final storage = context.read<StorageService>();
+    final rememberMe = context.read<RememberMeProvider>();
+
+    final isRemembered = storage.getBool(StorageService.keyRememberMe);
+    if (isRemembered) {
+      final savedEmail = storage.getString(StorageService.keySavedEmail);
+      if (savedEmail != null) {
+        _emailController.text = savedEmail;
+        rememberMe.setRememberMe(true);
+      }
+    }
+  }
+
   void _tapToLogin() async {
     if (_formKey.currentState!.validate()) {
       final auth = context.read<AuthProvider>();
@@ -39,6 +63,20 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (mounted) {
         if (failure == null) {
+          final storage = context.read<StorageService>();
+          final rememberMe = context.read<RememberMeProvider>();
+
+          if (rememberMe.isRememberMe) {
+            storage.setBool(StorageService.keyRememberMe, true);
+            storage.setString(
+              StorageService.keySavedEmail,
+              _emailController.text.trim(),
+            );
+          } else {
+            storage.setBool(StorageService.keyRememberMe, false);
+            storage.remove(StorageService.keySavedEmail);
+          }
+
           context.pushReplacementNamed('home');
         } else {
           ScaffoldMessenger.of(context).showSnackBar(

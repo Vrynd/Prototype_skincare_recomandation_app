@@ -8,6 +8,9 @@ class StorageService {
   static const String keyReminderActive = 'is_uv_reminder_active';
   static const String keyFirstTime = 'is_first_time_user';
   static const String keyLastLocation = 'last_known_location';
+  static const String keySavedEmail = 'saved_user_email';
+  static const String keyRememberMe = 'is_remember_me_checked';
+  static const String keyLastActiveSession = 'last_active_session';
 
   Future<bool> setBool(String key, bool value) async {
     try {

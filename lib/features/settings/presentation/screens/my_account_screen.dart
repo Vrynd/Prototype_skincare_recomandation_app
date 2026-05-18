@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:skincare_recomendation/core/utils/app_helpers.dart';
 import 'package:skincare_recomendation/core/widgets/app_location.dart';
 import 'package:skincare_recomendation/core/widgets/app_scafold.dart';
+import 'package:skincare_recomendation/features/auth/provider/auth_provider.dart';
 import 'package:skincare_recomendation/features/home/provider/location_provider.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:skincare_recomendation/core/themes/app_colors.dart';
@@ -29,7 +30,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
   String _notificationStatus = 'Aktif';
   String _language = 'Indonesia';
   String _themeMode = 'Terang';
-  
+
   String get _greeting => AppHelpers.getGreeting();
 
   void _goToChangePassword() {
@@ -96,7 +97,9 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
       confirmText: 'Ya, Keluar',
       isDanger: true,
       icon: HugeIcons.strokeRoundedLogout01,
-      onConfirm: () {},
+      onConfirm: () {
+        context.read<AuthProvider>().signOut();
+      },
     );
   }
 
