@@ -12,6 +12,7 @@ import 'package:skincare_recomendation/core/widgets/app_title_header.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/remember_recovery.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/social_button.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/social_divider.dart';
+import 'package:skincare_recomendation/core/widgets/app_toast.dart';
 import 'package:skincare_recomendation/core/utils/app_validators.dart';
 import 'package:provider/provider.dart';
 import 'package:skincare_recomendation/core/services/storage_service.dart';
@@ -77,14 +78,12 @@ class _LoginScreenState extends State<LoginScreen> {
             storage.remove(StorageService.keySavedEmail);
           }
 
-          context.pushReplacementNamed('home');
+          if (context.mounted) {
+            AppToast.showSuccess(context, 'Selamat datang kembali!');
+            context.pushReplacementNamed('home');
+          }
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(failure.message),
-              backgroundColor: context.colors.error,
-            ),
-          );
+          AppToast.showError(context, failure.message);
         }
       }
     }

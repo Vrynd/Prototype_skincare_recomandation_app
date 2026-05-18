@@ -11,6 +11,7 @@ import 'package:skincare_recomendation/core/widgets/app_title_footer.dart';
 import 'package:skincare_recomendation/core/widgets/app_title_header.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/social_button.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/social_divider.dart';
+import 'package:skincare_recomendation/core/widgets/app_toast.dart';
 import 'package:skincare_recomendation/core/utils/app_validators.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/password_strength_indicator.dart';
 import 'package:skincare_recomendation/features/auth/provider/register_provider.dart';
@@ -42,14 +43,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       if (mounted) {
         if (failure == null) {
+          AppToast.showSuccess(context, 'Pendaftaran berhasil! Selamat datang.');
           context.pushReplacementNamed('home');
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(failure.message),
-              backgroundColor: context.colors.error,
-            ),
-          );
+          AppToast.showError(context, failure.message);
         }
       }
     }

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:go_router/go_router.dart';
-import 'package:skincare_recomendation/core/themes/app_colors.dart';
 import 'package:skincare_recomendation/core/themes/app_spacing.dart';
-import 'package:skincare_recomendation/core/themes/app_theme.dart';
 import 'package:skincare_recomendation/core/utils/app_validators.dart';
 import 'package:skincare_recomendation/core/widgets/app_navigation.dart';
 import 'package:skincare_recomendation/core/widgets/app_scafold.dart';
 import 'package:skincare_recomendation/core/widgets/app_text_field.dart';
 import 'package:skincare_recomendation/core/widgets/app_title_header.dart';
 import 'package:skincare_recomendation/core/widgets/app_title_footer.dart';
+import 'package:skincare_recomendation/core/widgets/app_toast.dart';
 import 'package:skincare_recomendation/features/settings/presentation/widgets/group_title.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
@@ -49,20 +48,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         _isLoading = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Kata sandi Anda berhasil diperbarui',
-            style: context.text.bodyLarge?.copyWith(color: Colors.white),
-          ),
-          backgroundColor: AppColors.accentTeal,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          margin: const EdgeInsets.all(20),
-        ),
-      );
+      AppToast.showSuccess(context, 'Kata sandi Anda berhasil diperbarui');
 
       context.pop();
     }
