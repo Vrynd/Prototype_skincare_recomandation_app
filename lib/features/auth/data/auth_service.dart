@@ -72,6 +72,39 @@ class AuthService {
     }
   }
 
+  Future<Result<UserModel?, AuthFailure>> updateUserProfile({
+    required String namaLengkap,
+  }) async {
+    final user = currentUser;
+    if (user == null) return const Success(null);
+
+    try {
+      // Update data di tabel users
+      final data = await _client
+          .from('users')
+          .update({'nama_lengkap': namaLengkap})
+          .eq('id_user', user.id)
+          .select()
+          .maybeSingle();
+
+      // Update metadata auth
+      await _client.auth.updateUser(
+        UserAttributes(data: {'full_name': namaLengkap}),
+      );
+
+      if (data != null) {
+        return Success(UserModel.fromJson(data));
+      }
+      return const Success(null);
+    } on PostgrestException catch (e) {
+      return Failure(AuthUnknownFailure(e.message));
+    } on AuthException catch (e) {
+      return Failure(_mapSupabaseError(e));
+    } catch (e) {
+      return Failure(AuthUnknownFailure(e.toString()));
+    }
+  }
+
   AuthFailure _mapSupabaseError(AuthException e) {
     final message = e.message.toLowerCase();
     if (message.contains('invalid login credentials')) {

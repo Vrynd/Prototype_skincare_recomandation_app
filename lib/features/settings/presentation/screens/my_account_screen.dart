@@ -77,14 +77,37 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
     );
   }
 
+  String _formatJoinedDate(DateTime? dateTime) {
+    if (dateTime == null) return 'Baru Terdaftar';
+    final months = [
+      'Januari',
+      'Februari',
+      'Maret',
+      'April',
+      'Mei',
+      'Juni',
+      'Juli',
+      'Agustus',
+      'September',
+      'Oktober',
+      'November',
+      'Desember'
+    ];
+    return '${dateTime.day} ${months[dateTime.month - 1]} ${dateTime.year}';
+  }
+
   void _showProfileDetail() {
+    final user = context.read<AuthProvider>().userProfile;
+    final name = user?.namaLengkap ?? 'Pengguna';
+    final email = user?.email ?? 'email@domain.com';
+    
     ProfileSheet.show(
       context: context,
-      name: 'Sarah Fatimatuz Zahra',
-      email: 'sarahftz@gmail.com',
-      avatarUrl: null,
-      accountStatus: 'Aktif',
-      joinedDate: '12 Mei 2024',
+      name: name,
+      email: email,
+      avatarUrl: user?.fotoProfile,
+      accountStatus: user?.statusAkun == true ? 'Aktif' : 'Nonaktif',
+      joinedDate: _formatJoinedDate(user?.createdAt),
     );
   }
 
@@ -105,6 +128,11 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<AuthProvider>().userProfile;
+    final fullName = user?.namaLengkap ?? 'Pengguna';
+    final firstName = fullName.split(' ').first;
+    final email = user?.email ?? 'email@domain.com';
+
     return AppScafold(
       statusBarIconBrightness: Brightness.light,
       showHandle: true,
@@ -112,9 +140,9 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
         builder: (context, provider, _) {
           return AppLocation(
             location: provider.address,
-            userName: 'Sarah Fatimatuz Zahra',
-            greeting: '$_greeting, Sarah!',
-            avatarUrl: null,
+            userName: fullName,
+            greeting: '$_greeting, $firstName!',
+            avatarUrl: user?.fotoProfile,
           );
         },
       ),
@@ -122,11 +150,11 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
         padding: const EdgeInsets.fromLTRB(20, 4, 20, 32),
         children: [
           AccountProfile(
-            name: 'Sarah Fatimatuz Zahra',
-            email: 'sarahftz@gmail.com',
-            avatarUrl: null,
+            name: fullName,
+            email: email,
+            avatarUrl: user?.fotoProfile,
             isOnline: true,
-            accountStatus: 'Aktif',
+            accountStatus: user?.statusAkun == true ? 'Aktif' : 'Nonaktif',
             onTap: () => _showProfileDetail(),
           ),
           AppSpacing.v20,

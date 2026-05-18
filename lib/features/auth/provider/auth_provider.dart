@@ -77,6 +77,30 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  Future<AuthFailure?> updateUserProfile({required String namaLengkap}) async {
+    _updateState(const AuthLoading());
+    final result = await _authService.updateUserProfile(namaLengkap: namaLengkap);
+
+    switch (result) {
+      case Success(data: final profile):
+        if (profile != null) {
+          _updateState(AuthAuthenticated(profile));
+        } else {
+          _updateState(const AuthUnauthenticated());
+        }
+        return null;
+      case Failure(error: final failure):
+        // Revert to old profile if error
+        final oldResult = await _authService.getCurrentUserProfile();
+        if (oldResult is Success<UserModel?, AuthFailure> && oldResult.data != null) {
+          _updateState(AuthAuthenticated(oldResult.data!));
+        } else {
+          _updateState(AuthError(failure));
+        }
+        return failure;
+    }
+  }
+
   Future<AuthFailure?> signUp({
     required String email,
     required String password,

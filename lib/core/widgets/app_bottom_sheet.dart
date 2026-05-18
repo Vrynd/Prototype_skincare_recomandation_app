@@ -76,15 +76,25 @@ class AppBottomSheet extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAlias,
       padding: EdgeInsets.zero,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (showHandle) _buildHandle(context),
-          Padding(
-            padding: padding ?? const EdgeInsets.fromLTRB(20, 20, 20, 60),
-            child: child,
+      child: AnimatedPadding(
+        duration: const Duration(milliseconds: 150),
+        curve: Curves.easeOutQuad,
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (showHandle) _buildHandle(context),
+              Padding(
+                padding: padding ?? const EdgeInsets.fromLTRB(20, 20, 20, 60),
+                child: child,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
