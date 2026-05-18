@@ -8,16 +8,59 @@ import 'package:skincare_recomendation/features/navigations/presentation/screens
 import 'package:skincare_recomendation/features/settings/presentation/screens/my_account_screen.dart';
 import 'package:skincare_recomendation/features/settings/presentation/screens/change_password_screen.dart';
 import 'package:skincare_recomendation/features/recommendation/presentation/screens/skincare_match_screen.dart';
+import 'dart:async';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(
   debugLabel: 'root',
 );
 
+class GoRouterRefreshStream extends ChangeNotifier {
+  GoRouterRefreshStream(Stream<dynamic> stream) {
+    notifyListeners();
+    _subscription = stream.asBroadcastStream().listen(
+      (dynamic _) => notifyListeners(),
+    );
+  }
+
+  late final StreamSubscription<dynamic> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+}
+
 class AppRoute {
+  static final _refreshListenable = GoRouterRefreshStream(
+    Supabase.instance.client.auth.onAuthStateChange,
+  );
+
   static final router = GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: '/login',
+    initialLocation: '/',
+    refreshListenable: _refreshListenable,
     debugLogDiagnostics: true,
+    redirect: (context, state) {
+      final isAuthenticated =
+          Supabase.instance.client.auth.currentSession != null;
+      final isAuthRoute =
+          state.matchedLocation == '/login' ||
+          state.matchedLocation == '/register';
+
+      // Jika belum login dan mencoba masuk ke halaman selain login/register
+      if (!isAuthenticated && !isAuthRoute) {
+        return '/login';
+      }
+
+      // Jika sudah login tapi malah ke halaman login/register
+      if (isAuthenticated && isAuthRoute) {
+        return '/';
+      }
+
+      return null;
+    },
     routes: [
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
@@ -38,7 +81,8 @@ class AppRoute {
               GoRoute(
                 path: '/insight',
                 name: 'insight',
-                builder: (context, state) => const Scaffold(body: Center(child: Text('Insight Screen'))),
+                builder: (context, state) =>
+                    const Scaffold(body: Center(child: Text('Insight Screen'))),
               ),
             ],
           ),
@@ -47,7 +91,8 @@ class AppRoute {
               GoRoute(
                 path: '/history',
                 name: 'history',
-                builder: (context, state) => const Scaffold(body: Center(child: Text('Riwayat Screen'))),
+                builder: (context, state) =>
+                    const Scaffold(body: Center(child: Text('Riwayat Screen'))),
               ),
             ],
           ),
@@ -89,7 +134,9 @@ class AppRoute {
           transitionDuration: const Duration(milliseconds: 500),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
-              opacity: CurveTween(curve: Curves.easeInOutCubic).animate(animation),
+              opacity: CurveTween(
+                curve: Curves.easeInOutCubic,
+              ).animate(animation),
               child: child,
             );
           },
@@ -104,7 +151,9 @@ class AppRoute {
           transitionDuration: const Duration(milliseconds: 500),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
-              opacity: CurveTween(curve: Curves.easeInOutCubic).animate(animation),
+              opacity: CurveTween(
+                curve: Curves.easeInOutCubic,
+              ).animate(animation),
               child: child,
             );
           },

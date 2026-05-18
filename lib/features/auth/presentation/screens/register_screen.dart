@@ -15,6 +15,7 @@ import 'package:skincare_recomendation/core/utils/app_validators.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/password_strength_indicator.dart';
 import 'package:skincare_recomendation/features/auth/provider/register_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:skincare_recomendation/features/auth/provider/auth_provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -30,7 +31,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
 
   void _tapToRegister() async {
-    if (_formKey.currentState!.validate()) {}
+    if (_formKey.currentState!.validate()) {
+      final auth = context.read<AuthProvider>();
+
+      final failure = await auth.signUp(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+        namaLengkap: _nameController.text.trim(),
+      );
+
+      if (mounted) {
+        if (failure == null) {
+          context.pushReplacementNamed('home');
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(failure.message),
+              backgroundColor: context.colors.error,
+            ),
+          );
+        }
+      }
+    }
   }
 
   void _goToLogin() {
@@ -139,7 +161,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     AppSpacing.v24,
 
-                    AppButton(title: 'Daftar Sekarang', onTap: _tapToRegister),
+                    AppButton(
+                      title: 'Daftar Sekarang',
+                      isLoading: context.watch<AuthProvider>().isLoading,
+                      onTap: _tapToRegister,
+                    ),
                     AppSpacing.v24,
 
                     const SocialDivider(title: 'atau lanjutkan dengan'),

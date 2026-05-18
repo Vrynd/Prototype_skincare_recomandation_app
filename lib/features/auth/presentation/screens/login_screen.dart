@@ -13,6 +13,8 @@ import 'package:skincare_recomendation/features/auth/presentation/widgets/rememb
 import 'package:skincare_recomendation/features/auth/presentation/widgets/social_button.dart';
 import 'package:skincare_recomendation/features/auth/presentation/widgets/social_divider.dart';
 import 'package:skincare_recomendation/core/utils/app_validators.dart';
+import 'package:provider/provider.dart';
+import 'package:skincare_recomendation/features/auth/provider/auth_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -27,7 +29,27 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
 
   void _tapToLogin() async {
-   context.pushNamed('home');
+    if (_formKey.currentState!.validate()) {
+      final auth = context.read<AuthProvider>();
+
+      final failure = await auth.signIn(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      if (mounted) {
+        if (failure == null) {
+          context.pushReplacementNamed('home');
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(failure.message),
+              backgroundColor: context.colors.error,
+            ),
+          );
+        }
+      }
+    }
   }
 
   void _goToRegister() {
@@ -102,7 +124,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     AppSpacing.v24,
 
-                    AppButton(title: 'Login Sekarang', onTap: _tapToLogin),
+                    AppButton(
+                      title: 'Login Sekarang',
+                      isLoading: context.watch<AuthProvider>().isLoading,
+                      onTap: _tapToLogin,
+                    ),
                     AppSpacing.v24,
 
                     const SocialDivider(title: 'atau lanjutkan dengan'),

@@ -11,21 +11,25 @@ import 'package:skincare_recomendation/features/auth/provider/remember_me_provid
 import 'package:skincare_recomendation/features/auth/provider/register_provider.dart';
 import 'package:skincare_recomendation/features/navigations/provider/bottom_bar_provider.dart';
 
+import 'package:skincare_recomendation/features/auth/data/auth_service.dart';
+import 'package:skincare_recomendation/features/auth/provider/auth_provider.dart';
+
 class MyApp extends StatelessWidget {
   final StorageService storageService;
 
-  const MyApp({
-    super.key,
-    required this.storageService,
-  });
+  const MyApp({super.key, required this.storageService});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         Provider<SupabaseService>(create: (_) => SupabaseService()),
+        Provider<AuthService>(create: (_) => AuthService()),
         Provider<StorageService>.value(value: storageService),
         Provider<LocationService>(create: (_) => LocationService()),
+        ChangeNotifierProvider(
+          create: (context) => AuthProvider(context.read<AuthService>()),
+        ),
         ChangeNotifierProvider(
           create: (context) => LocationProvider(
             context.read<LocationService>(),
@@ -33,9 +37,13 @@ class MyApp extends StatelessWidget {
           ),
         ),
         ChangeNotifierProvider(create: (context) => BottomBarProvider()),
-        ChangeNotifierProvider(create: (context) => PasswordVisibilityProvider()),
+        ChangeNotifierProvider(
+          create: (context) => PasswordVisibilityProvider(),
+        ),
         ChangeNotifierProvider(create: (context) => RememberMeProvider()),
-        ChangeNotifierProvider(create: (context) => PasswordIndicatorProvider()),
+        ChangeNotifierProvider(
+          create: (context) => PasswordIndicatorProvider(),
+        ),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
