@@ -35,7 +35,7 @@ class AppTitleHeader extends StatelessWidget {
 
     final descriptionStyle = style == HeaderStyle.form
         ? context.text.bodyLarge?.copyWith(
-            color: context.colors.outline,
+            color: context.colors.onSurface.withValues(alpha: .9),
           )
         : context.text.bodyLarge?.copyWith(
             color: context.colors.onSurfaceVariant,

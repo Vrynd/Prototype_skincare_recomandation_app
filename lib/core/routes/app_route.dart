@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:skincare_recomendation/features/auth/presentation/screens/login_screen.dart';
 import 'package:skincare_recomendation/features/auth/presentation/screens/register_screen.dart';
 import 'package:skincare_recomendation/features/home/presentation/screens/home_screen.dart';
-import 'package:skincare_recomendation/features/home/presentation/screens/last_recommendation_screen.dart';
 import 'package:skincare_recomendation/features/navigations/presentation/screens/navigation_screen.dart';
 import 'package:skincare_recomendation/features/settings/presentation/screens/my_account_screen.dart';
 import 'package:skincare_recomendation/features/settings/presentation/screens/change_password_screen.dart';
@@ -107,14 +106,7 @@ class AppRoute {
           ),
         ],
       ),
-      GoRoute(
-        path: '/last-recommendation',
-        name: 'last-recommendation',
-        builder: (context, state) {
-          final title = state.extra as String? ?? 'Rekomendasi';
-          return LastRecommendationScreen(title: title);
-        },
-      ),
+
       GoRoute(
         path: '/change-password',
         name: 'change-password',

@@ -9,6 +9,7 @@ class AppAvatar extends StatelessWidget {
   final bool isOnline;
   final double? borderWidth;
   final Color? borderColor;
+  final bool isGlass;
 
   const AppAvatar({
     super.key,
@@ -18,6 +19,7 @@ class AppAvatar extends StatelessWidget {
     this.isOnline = false,
     this.borderWidth,
     this.borderColor,
+    this.isGlass = false,
   });
 
   @override
@@ -26,7 +28,7 @@ class AppAvatar extends StatelessWidget {
     final double indicatorBorder = indicatorSize * 0.18;
 
     final bool hasImage = imageUrl != null && imageUrl!.isNotEmpty;
-    final Color backgroundColor = _getBackgroundColor();
+    final Color baseBgColor = isGlass ? context.colors.surface : _getBackgroundColor();
 
     return Stack(
       children: [
@@ -35,10 +37,10 @@ class AppAvatar extends StatelessWidget {
           height: size,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: backgroundColor.withValues(alpha: 0.15),
+            color: baseBgColor.withValues(alpha: isGlass ? 0.08 : 0.15),
             border: Border.all(
               color:
-                  borderColor ?? context.colors.surface.withValues(alpha: 0.8),
+                  borderColor ?? (isGlass ? context.colors.surface.withValues(alpha: 0.3) : context.colors.surface.withValues(alpha: 0.8)),
               width: borderWidth ?? 0,
             ),
           ),
@@ -48,7 +50,7 @@ class AppAvatar extends StatelessWidget {
                     imageUrl!,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
-                      return _buildInitials(context, backgroundColor);
+                      return _buildInitials(context, baseBgColor);
                     },
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) return child;
@@ -67,7 +69,7 @@ class AppAvatar extends StatelessWidget {
                       );
                     },
                   )
-                : _buildInitials(context, backgroundColor),
+                : _buildInitials(context, baseBgColor),
           ),
         ),
         if (isOnline)
@@ -91,12 +93,12 @@ class AppAvatar extends StatelessWidget {
     );
   }
 
-  Widget _buildInitials(BuildContext context, Color backgroundColor) {
+  Widget _buildInitials(BuildContext context, Color baseColor) {
     return Center(
       child: Text(
         _getInitials(),
         style: context.text.titleMedium?.copyWith(
-          color: backgroundColor,
+          color: isGlass ? context.colors.surface : baseColor,
           fontWeight: FontWeight.w600,
           fontSize: size * 0.38,
         ),

@@ -14,11 +14,11 @@ class UvIndexModel {
   UvStatus get currentStatus => getUvStatus(currentUv);
 
   static UvStatus getUvStatus(int uv) {
-    if (uv <= 2) return UvStatus('Low', Colors.green);
-    if (uv <= 5) return UvStatus('Moderate', Colors.orange);
-    if (uv <= 7) return UvStatus('High', Colors.redAccent);
-    if (uv <= 10) return UvStatus('Very High', Colors.red);
-    return UvStatus('Extreme', Colors.purple);
+    if (uv <= 2) return UvStatus('Rendah', Colors.green);
+    if (uv <= 5) return UvStatus('Sedang', Colors.orange);
+    if (uv <= 7) return UvStatus('Tinggi', Colors.redAccent);
+    if (uv <= 10) return UvStatus('Sangat Tinggi', Colors.red);
+    return UvStatus('Ekstrem', Colors.purple);
   }
 }
 

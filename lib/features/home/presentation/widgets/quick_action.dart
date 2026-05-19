@@ -3,76 +3,86 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:skincare_recomendation/core/themes/app_radius.dart';
 import 'package:skincare_recomendation/core/themes/app_theme.dart';
 import 'package:skincare_recomendation/core/widgets/app_container.dart';
-import 'package:skincare_recomendation/features/home/models/quick_action_model.dart';
 
 class QuickAction extends StatelessWidget {
-  final List<QuickActionModel> data;
-  final void Function(int index) onItemTap;
+  final void Function(String title) onItemTap;
+  const QuickAction({super.key, required this.onItemTap});
 
-  const QuickAction({
-    super.key,
-    required this.data,
-    required this.onItemTap,
-  });
+  static const List<Map<String, dynamic>> _items = [
+    {
+      'title': 'Kenali Kulitmu',
+      'icon': HugeIcons.strokeRoundedFaceId,
+      'isComingSoon': true,
+    },
+    {
+      'title': 'Dapatkan Rekomendasi',
+      'icon': HugeIcons.strokeRoundedPuzzle,
+      'isComingSoon': false,
+    },
+    {
+      'title': 'Rutinitas Harian',
+      'icon': HugeIcons.strokeRoundedTaskDaily02,
+      'isComingSoon': true,
+    },
+    {
+      'title': 'Preferensi Kulit',
+      'icon': HugeIcons.strokeRoundedSlidersHorizontal,
+      'isComingSoon': true,
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return _body(context);
-  }
+    return GridView.count(
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.zero,
+      crossAxisSpacing: 8,
+      mainAxisSpacing: 8,
+      childAspectRatio: 1.46,
+      children: _items.map((item) {
+        final title = item['title'] as String;
+        final icon = item['icon'];
+        final isComingSoon = item['isComingSoon'] as bool;
 
-  Widget _body(BuildContext context) {
-    final List<Widget> rows = [];
-    for (int i = 0; i < data.length; i += 2) {
-      rows.add(
-        Row(
-          spacing: 8,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _QuickActionItem(
-              data: data[i],
-              onTap: data[i].isComingSoon ? null : () => onItemTap(i),
-            ),
-            if (i + 1 < data.length)
-              _QuickActionItem(
-                data: data[i + 1],
-                onTap:
-                    data[i + 1].isComingSoon ? null : () => onItemTap(i + 1),
-              )
-            else
-              const Expanded(flex: 2, child: SizedBox()),
-          ],
-        ),
-      );
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 8,
-      children: rows,
+        return _QuickActionItem(
+          title: title,
+          icon: icon,
+          isComingSoon: isComingSoon,
+          onTap: isComingSoon ? null : () => onItemTap(title),
+        );
+      }).toList(),
     );
   }
 }
 
 class _QuickActionItem extends StatelessWidget {
-  final QuickActionModel data;
+  final String title;
+  final dynamic icon;
+  final bool isComingSoon;
   final VoidCallback? onTap;
 
-  const _QuickActionItem({required this.data, this.onTap});
+  const _QuickActionItem({
+    required this.title,
+    required this.icon,
+    required this.isComingSoon,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 2,
-      child: AppContainer(
-        opacity: 0.8,
+    return AppContainer(
+      opacity: 0.8,
+      borderRadius: AppRadius.br24,
+      showShadow: false,
+      padding: EdgeInsets.zero,
+      child: InkWell(
+        onTap: onTap,
         borderRadius: AppRadius.br24,
-        showShadow: false,
-        padding: EdgeInsets.zero,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: AppRadius.br24,
-          child: Stack(
-            children: [
+        child: Stack(
+          children: [
+            // Background Radial Gradients
             Positioned(
               top: -40,
               left: -20,
@@ -107,66 +117,70 @@ class _QuickActionItem extends StatelessWidget {
                 ),
               ),
             ),
-              if (data.isComingSoon)
-                Positioned(
-                  top: 16,
-                  left: 16,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: context.colors.primaryContainer,
-                      borderRadius: AppRadius.br8,
-                    ),
-                    child: Text(
-                      "Segera",
-                      style: context.text.labelSmall?.copyWith(
-                        color: context.colors.onSecondaryContainer,
-                        fontWeight: FontWeight.w600,
-                      ),
+
+            // Coming Soon Badge
+            if (isComingSoon)
+              Positioned(
+                top: 16,
+                left: 16,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: context.colors.primaryContainer,
+                    borderRadius: AppRadius.br8,
+                  ),
+                  child: Text(
+                    "Segera",
+                    style: context.text.labelSmall?.copyWith(
+                      color: context.colors.onSecondaryContainer,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  spacing: 8,
-                  children: [
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: AppContainer(
-                        width: 45,
-                        height: 45,
-                        color: context.colors.onSurfaceVariant,
-                        opacity: 0.05,
-                        showShadow: false,
-                        padding: EdgeInsets.zero,
+              ),
+
+            // Content (Icon & Text)
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                spacing: 8,
+                children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      width: 45,
+                      height: 45,
+                      decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        child: Center(
-                          child: HugeIcon(
-                            icon: data.icon,
-                            size: 22,
-                            color: context.colors.onSurface,
-                          ),
+                        color: context.colors.onSurfaceVariant.withValues(
+                          alpha: 0.05,
+                        ),
+                      ),
+                      child: Center(
+                        child: HugeIcon(
+                          icon: icon,
+                          size: 22,
+                          color: context.colors.onSurface,
                         ),
                       ),
                     ),
-                    Text(
-                      data.title.replaceAll(' ', '\n'),
-                      style: context.text.titleMedium?.copyWith(
-                        color: context.colors.onSurfaceVariant,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  ),
+                  Text(
+                    title.replaceAll(' ', '\n'),
+                    style: context.text.titleMedium?.copyWith(
+                      color: context.colors.onSurfaceVariant,
+                      fontWeight: FontWeight.w600,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
